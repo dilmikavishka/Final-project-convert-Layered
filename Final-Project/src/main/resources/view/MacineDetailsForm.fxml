@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="apnMacchineDetails" prefHeight="750.0" prefWidth="1222.0" style="-fx-background-radius: 10;" styleClass="anchorpane-sec" stylesheets="@../css/MainForm.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.MacineDetailsFormController">
+   <children>
+      <JFXComboBox fx:id="comMachineId" layoutX="245.0" layoutY="118.0" onAction="#comMachineIdOnAction" prefHeight="30.0" prefWidth="200.0" />
+      <JFXComboBox fx:id="comBatchId" layoutX="595.0" layoutY="119.0" onAction="#comBatchIdOnAction" prefHeight="30.0" prefWidth="200.0" />
+      <TableView fx:id="tblMachineDetails" layoutX="128.0" layoutY="199.0" prefHeight="527.0" prefWidth="671.0">
+        <columns>
+          <TableColumn fx:id="colMachineId" prefWidth="310.93336486816406" text="Machine Id" />
+          <TableColumn fx:id="colBatchId" prefWidth="360.2666931152344" text="Batch Id" />
+        </columns>
+      </TableView>
+      <Label layoutX="515.0" layoutY="17.0" prefHeight="35.0" prefWidth="205.0" text="Machine Detail">
+         <font>
+            <Font name="Calibri Bold" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="600.0" layoutY="92.0" text="Batch Id :">
+         <font>
+            <Font name="Calibri Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="253.0" layoutY="91.0" text="Machine Id :">
+         <font>
+            <Font name="Calibri Bold" size="17.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

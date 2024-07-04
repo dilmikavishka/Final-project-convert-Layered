@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anpMaterialsDetails" prefHeight="750.0" prefWidth="1222.0" style="-fx-background-radius: 10;" styleClass="anchorpane-sec" stylesheets="@../css/MainForm.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.MaterialDetailFormController">
+   <children>
+      <JFXComboBox fx:id="comBatchId" layoutX="127.0" layoutY="130.0" onAction="#comBatchIdOnAction" prefHeight="30.0" prefWidth="200.0" />
+      <JFXComboBox fx:id="comMaterialId" layoutX="382.0" layoutY="130.0" onAction="#comMaterialIdOnAction" prefHeight="30.0" prefWidth="200.0" />
+      <TableView fx:id="tblMaterialsDetails" layoutX="141.0" layoutY="194.0" prefHeight="538.0" prefWidth="672.0">
+        <columns>
+          <TableColumn fx:id="colBatchId" prefWidth="318.93336486816406" text="Batch Id" />
+          <TableColumn fx:id="colMaterialId" prefWidth="328.2666931152344" text="Material Id" />
+        </columns>
+      </TableView>
+      <Label layoutX="509.0" layoutY="17.0" prefHeight="35.0" prefWidth="205.0" text="Material Details">
+         <font>
+            <Font name="Calibri Bold" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="130.0" layoutY="104.0" text="Batch Id :">
+         <font>
+            <Font name="Calibri Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="387.0" layoutY="102.0" text="Material Id :">
+         <font>
+            <Font name="Calibri Bold" size="17.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="420.0" fitWidth="341.0" layoutX="862.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/ada%20supplier.jpg" />
+         </image></ImageView>
+   </children>
+</AnchorPane>
