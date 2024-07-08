@@ -16,12 +16,6 @@ public class BatchMachinDAOImpl implements BatchMachineDAO {
     }
 
     public  boolean save(BatchMachine batchMachine) throws SQLException, ClassNotFoundException {
-       /* String sql = "INSERT INTO machine_details  VALUES (?,?,?)";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setObject(1, batchMachineDTO.getMaId());
-        pstm.setObject(2, batchMachineDTO.getBaId());
-        pstm.setObject(3, batchMachineDTO.getDate());
-        return pstm.executeUpdate() > 0;*/
         return SQLUtil.execute("INSERT INTO machine_details  VALUES (?,?,?)",batchMachine.getMaId(),batchMachine.getBaId(),batchMachine.getDate());
     }
 

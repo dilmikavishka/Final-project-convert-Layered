@@ -16,12 +16,8 @@ import java.util.List;
 public class MaterialDetailDAOImpl implements MaterialDetailDAO {
 
     public List<MaterialDetail> getAll() throws SQLException, ClassNotFoundException {
-       /* String sql = "SELECT * FROM material_details WHERE  status = 'ACTIVE'";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-*/
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM material_details WHERE  status = 'ACTIVE'");
         List<MaterialDetail> mdList = new ArrayList<>();
-
         while (resultSet.next()){
             MaterialDetail materialDetail = new MaterialDetail(
             resultSet.getString(1),
@@ -35,16 +31,7 @@ public class MaterialDetailDAOImpl implements MaterialDetailDAO {
 
     @Override
     public boolean save(MaterialDetail md) throws SQLException, ClassNotFoundException {
-        String sql = "INSERT INTO material_details VALUES(?, ?, ?, 'ACTIVE')";
-
-        PreparedStatement pstm = DbConnection.getInstance().getConnection()
-                .prepareStatement(sql);
-
-        pstm.setString(1, md.getBatId());
-        pstm.setString(2, md.getMatId());
-        pstm.setInt(3, md.getQty());
-
-        return pstm.executeUpdate() > 0;
+        return SQLUtil.execute("INSERT INTO material_details VALUES(?, ?, ?, 'ACTIVE')",md.getBatId(),md.getMatId(),md.getQty());
     }
 
     @Override
@@ -58,11 +45,7 @@ public class MaterialDetailDAOImpl implements MaterialDetailDAO {
     }
 
     public  MaterialDetail searchById(String id) throws SQLException, ClassNotFoundException {
-        /*String sql = "SELECT * FROM  material_details WHERE batchId = ? ";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setObject(1,id);*/
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM  material_details WHERE batchId = ? ",id);
-
         if (resultSet.next()){
             MaterialDetail materialDetail = new MaterialDetail(
                     resultSet.getString(1),

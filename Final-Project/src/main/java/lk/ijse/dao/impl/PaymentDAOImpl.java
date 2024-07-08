@@ -14,13 +14,8 @@ import java.util.List;
 
 public class PaymentDAOImpl implements PaymentDAO {
     public List<Payment> getAll() throws SQLException, ClassNotFoundException {
-        /*String sql = "SELECT * FROM  payment WHERE status = 'ACTIVE' ";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-*/
         ResultSet resultSet = SQLUtil.execute( "SELECT * FROM  payment WHERE status = 'ACTIVE' ");
-
         List<Payment> payList = new ArrayList<>();
-
         while(resultSet.next()){
             Payment payment = new Payment(
             resultSet.getString("paymentId"),
@@ -35,44 +30,19 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     public  boolean delete(String id) throws SQLException, ClassNotFoundException {
-      /*  String sql = "UPDATE payment SET status = 'DELETE' WHERE paymentId = ?";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setObject(1,id);
-        return pstm.executeUpdate() > 0;*/
         return SQLUtil.execute("UPDATE payment SET status = 'DELETE' WHERE paymentId = ?",id);
     }
 
     public  boolean save(Payment payment) throws SQLException, ClassNotFoundException {
-       /* String sql = "INSERT INTO payment VALUES (?,?,?,?,?,'ACTIVE')";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setObject(1,paymentDTO.getPaymentId());
-        pstm.setObject(2,paymentDTO.getPaymentDate());
-        pstm.setObject(3,paymentDTO.getAmount());
-        pstm.setObject(4,paymentDTO.getType());
-        pstm.setObject(5,paymentDTO.getOId());
-        return pstm.executeUpdate() > 0;*/
         return SQLUtil.execute("INSERT INTO payment VALUES (?,?,?,?,?,'ACTIVE')",payment.getPaymentId(),payment.getPaymentDate(),payment.getAmount(),payment.getType(),payment.getOId());
     }
 
     public  boolean update(Payment payment) throws SQLException, ClassNotFoundException {
-       /* String sql = "UPDATE payment SET paymentDate = ?,amount = ?,type = ?,orderId = ? WHERE paymentId = ?";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setObject(1,paymentDTO.getPaymentDate());
-        pstm.setObject(2,paymentDTO.getAmount());
-        pstm.setObject(3,paymentDTO.getType());
-        pstm.setObject(4,paymentDTO.getOId());
-        pstm.setObject(5,paymentDTO.getPaymentId());
-        return pstm.executeUpdate() > 0;*/
         return SQLUtil.execute("UPDATE payment SET paymentDate = ?,amount = ?,type = ?,orderId = ? WHERE paymentId = ?",payment.getPaymentDate(),payment.getAmount(),payment.getType(),payment.getOId(),payment.getPaymentId());
     }
 
     public  Payment searchById(String id) throws SQLException, ClassNotFoundException {
-       /* String sql = "SELECT * FROM  payment WHERE paymentId = ? ";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setObject(1,id);*/
-
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM  payment WHERE paymentId = ? ",id);
-
         if (resultSet.next()){
             Payment payment = new Payment(
                     resultSet.getString("paymentId"),
@@ -87,37 +57,26 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     public  String generateNextId() throws SQLException, ClassNotFoundException {
-       /* String sql = "SELECT paymentId FROM payment ORDER BY paymentId DESC LIMIT 1";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);*/
-
         ResultSet rst = SQLUtil.execute("SELECT paymentId FROM payment ORDER BY paymentId DESC LIMIT 1");
-
         if (rst.next()) {
             String paymentId = rst.getString("paymentId");
             String prefix = "P";
-            String[] split = paymentId.split(prefix); // Split using the prefix
+            String[] split = paymentId.split(prefix);
             int idNum = Integer.parseInt(split[1]);
             String nextId = prefix + String.format("%03d", ++idNum);
             return nextId;
-
         }
         return "P001";
     }
 
     public  List<String> getPaymentId() throws SQLException, ClassNotFoundException {
-/*
-        String sql = "SELECT paymentId FROM payment";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-*/
-
         ResultSet resultSet = SQLUtil.execute("SELECT paymentId FROM payment");
-
         List<String> orderList = new ArrayList<>();
-
         while (resultSet.next()){
             String id = resultSet.getString("paymentId");
             orderList.add(id);
         }
         return orderList;
     }
+
 }

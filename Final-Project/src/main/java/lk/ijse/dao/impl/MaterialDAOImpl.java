@@ -14,13 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialDAOImpl implements MaterialDAO {
-    public  List<String> getMaterialIds() throws SQLException {
-        String sql = "SELECT materialId FROM material";
-        ResultSet resultSet = DbConnection.getInstance()
-                .getConnection()
-                .prepareStatement(sql)
-                .executeQuery();
-
+    public  List<String> getMaterialIds() throws SQLException, ClassNotFoundException {
+      ResultSet resultSet = SQLUtil.execute("SELECT materialId FROM material") ;
         List<String> matList = new ArrayList<>();
         while (resultSet.next()) {
             matList.add(resultSet.getString(1));
@@ -41,11 +36,6 @@ public class MaterialDAOImpl implements MaterialDAO {
 
 
     public List<Material> getAll() throws SQLException, ClassNotFoundException {
-        /*String sql = "SELECT * FROM  material WHERE status = 'ACTIVE'";
-        PreparedStatement pstm = DbConnection.getInstance().
-                getConnection().
-                prepareStatement(sql);*/
-
         ResultSet resultSet = SQLUtil.execute( "SELECT * FROM  material WHERE status = 'ACTIVE'");
         List<Material> materialList = new ArrayList<>();
         while(resultSet.next()){
@@ -62,39 +52,16 @@ public class MaterialDAOImpl implements MaterialDAO {
     }
 
     public  boolean save(Material material) throws SQLException, ClassNotFoundException {
-       /* String sql = "INSERT INTO material VALUES (?,?,?,?,?,?,'ACTIVE')";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setObject(1,materialDTO.getId());
-        pstm.setObject(2,materialDTO.getName());
-        pstm.setObject(3,materialDTO.getDate());
-        pstm.setObject(4,materialDTO.getMatQty());
-        pstm.setObject(5,materialDTO.getSupId());
-        pstm.setObject(6,materialDTO.getPrice());
-        return pstm.executeUpdate() > 0;*/
         return SQLUtil.execute("INSERT INTO material VALUES (?,?,?,?,?,?,'ACTIVE')",material.getId(),material.getName(),material.getDate(),material.getMatQty(),material.getSupId(),material.getPrice());
     }
 
     public  boolean update(Material material) throws SQLException, ClassNotFoundException {
-       /* String sql = "UPDATE material SET name = ?, date = ?, materialQty = ?, supplierId = ?,price = ? WHERE materialId = ?";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setObject(1,materialDTO.getName());
-        pstm.setObject(2,materialDTO.getDate());
-        pstm.setObject(3,materialDTO.getMatQty());
-        pstm.setObject(4,materialDTO.getSupId());
-        pstm.setObject(5,materialDTO.getPrice());
-        pstm.setObject(6,materialDTO.getId());
-        return pstm.executeUpdate() > 0;*/
         return SQLUtil.execute("UPDATE material SET name = ?, date = ?, materialQty = ?, supplierId = ?,price = ? WHERE materialId = ?",material.getName(),material.getDate(),material.getMatQty(),material.getSupId(),material.getPrice(),material.getId());
 
     }
 
     public  Material searchById(String id) throws SQLException, ClassNotFoundException {
-      /*  String sql = "SELECT * FROM  material WHERE materialId = ? ";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setObject(1,id);*/
-
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM  material WHERE materialId = ? ",id);
-
         if (resultSet.next()){
             Material material = new Material(
                     resultSet.getString("materialId"),
@@ -110,29 +77,20 @@ public class MaterialDAOImpl implements MaterialDAO {
     }
 
     public  String generateNextId() throws SQLException, ClassNotFoundException {
-        /*String sql = "SELECT materialId FROM material ORDER BY materialId DESC LIMIT 1";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-*/
-        ResultSet rst = SQLUtil.execute("SELECT materialId FROM material ORDER BY materialId DESC LIMIT 1");
-
+      ResultSet rst = SQLUtil.execute("SELECT materialId FROM material ORDER BY materialId DESC LIMIT 1");
         if (rst.next()) {
             String materialId = rst.getString("materialId");
             String prefix = "M";
-            String[] split = materialId.split(prefix); // Split using the prefix
+            String[] split = materialId.split(prefix);
             int idNum = Integer.parseInt(split[1]);
             String nextId = prefix + String.format("%03d", ++idNum);
             return nextId;
-
         }
         return "M001";
 
     }
 
     public  boolean delete(String id) throws SQLException, ClassNotFoundException {
-   /*     String sql = "UPDATE material SET status = 'DELETE' WHERE materialId = ?";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setObject(1, id);
-        return pstm.executeUpdate() > 0;*/
         return SQLUtil.execute("UPDATE material SET status = 'DELETE' WHERE materialId = ?",id);
 
     }

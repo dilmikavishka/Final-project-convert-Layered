@@ -14,17 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface BatchDAO extends CrudDAO<Batch> {
- /*   public  boolean deleteBatch(String id) throws SQLException, ClassNotFoundException ;
-
-    public  boolean saveBatch(BatchDTO batchDTO) throws SQLException, ClassNotFoundException ;
-
-    public  List<BatchDTO> getAllBatch() throws SQLException, ClassNotFoundException ;
-
-    public  boolean updateBatch(BatchDTO batchDTO) throws SQLException, ClassNotFoundException ;
-
-    public  BatchDTO searchByBatchId(String id) throws SQLException, ClassNotFoundException;
-
-    public  String generateNextId() throws SQLException, ClassNotFoundException;*/
     public  List<String> getBatchIds() throws SQLException, ClassNotFoundException;
     boolean qtyUpdate(List<OredrDetailDTO> odList) throws SQLException, ClassNotFoundException;
     public  boolean updateQty(String batId, int qty) throws SQLException, ClassNotFoundException;

@@ -16,11 +16,6 @@ public class BatchMaterialDAOImpl implements BatchMaterialDAO {
     }
 
     public  boolean save(BatchMaterial batchMaterial) throws SQLException, ClassNotFoundException {
-       /* String sql = "INSERT INTO material_details  VALUES (?,?)";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setObject(1, batchMaterialDTO.getMaId());
-        pstm.setObject(2, batchMaterialDTO.getBaId());
-        return pstm.executeUpdate() > 0;*/
         return SQLUtil.execute("INSERT INTO material_details  VALUES (?,?)",batchMaterial.getMaId(),batchMaterial.getBaId());
     }
 

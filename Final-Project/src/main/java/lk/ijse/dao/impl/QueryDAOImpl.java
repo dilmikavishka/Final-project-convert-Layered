@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class QueryDAOImpl implements QueryDAO {
-
     @Override
     public String calculateNetTotalOrder(String orderId) throws SQLException, ClassNotFoundException {
         double netTotal = 0.0;
