@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface MaterialDAO extends CrudDAO<Material> {
+    public  List<String> getMaterialIds() throws SQLException, ClassNotFoundException;
   boolean updateCost(List<MaterialDetailDTO> bcList) throws SQLException, ClassNotFoundException;
 
  }

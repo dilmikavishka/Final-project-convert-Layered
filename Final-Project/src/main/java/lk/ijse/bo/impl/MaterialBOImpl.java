@@ -16,7 +16,7 @@ public class MaterialBOImpl implements MaterialBO {
     MaterialDAO materialDAO = new MaterialDAOImpl();
 
     @Override
-    public List<String> getMaterialIds() throws SQLException {
+    public List<String> getMaterialIds() throws SQLException, ClassNotFoundException {
         return materialDAO.getMaterialIds();
     }
 
