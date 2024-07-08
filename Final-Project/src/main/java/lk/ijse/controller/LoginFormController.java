@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 //import javafx.util.Duration;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.dao.custome.SecurityDAO;
+import lk.ijse.dao.impl.SecurityDAOImpl;
 import lk.ijse.db.DbConnection;
 
 import java.io.IOException;
@@ -63,7 +65,7 @@ public class LoginFormController {
     @FXML
     private TextField txtUserName;
 
-
+    SecurityDAO securityDAO = new SecurityDAOImpl();
     @FXML
     void linkFrogetPasswordOnAction(ActionEvent event) throws IOException {
         Parent rootNode = FXMLLoader.load(this.getClass().getResource("/view/SendOtpForm.fxml"));
@@ -84,33 +86,21 @@ public class LoginFormController {
 
         try {
             checkCredential(userId, pw);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
     }
 
-    private void checkCredential(String userId, String pw) throws SQLException, IOException {
-        String sql = "SELECT userId, password FROM user WHERE userId = ?";
+    private void checkCredential(String userId, String pw) throws SQLException, IOException, ClassNotFoundException {
+        String dbPw = securityDAO.check(userId);
 
-        Connection connection = DbConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setObject(1, userId);
-
-        ResultSet resultSet = pstm.executeQuery();
-        if (!isValied()) {
-            new Alert(Alert.AlertType.ERROR, "Please check all fields.").show();
-            return;
-        }
-        if(resultSet.next()) {
-            String dbPw = resultSet.getString("password");
-
+        if (dbPw != null){
             if(pw.equals(dbPw)) {
                 navigateToTheMain();
             } else {
                 new Alert(Alert.AlertType.ERROR, "sorry! password is incorrect!").show();
             }
-
         } else {
             new Alert(Alert.AlertType.INFORMATION, "sorry! user id can't be find!").show();
         }

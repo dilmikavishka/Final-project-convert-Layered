@@ -11,10 +11,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface MaterialDetailDAO extends CrudDAO<MaterialDetailDTO> {
+public interface MaterialDetailDAO extends CrudDAO<MaterialDetail> {
    // public boolean saveMat(MaterialDetailDTO md) throws SQLException;
 
-    boolean save(List<MaterialDetailDTO> bcList) throws SQLException, ClassNotFoundException;
+    boolean saveMd(List<MaterialDetailDTO> bcList) throws SQLException, ClassNotFoundException;
+
 
    /* public  List<MaterialDetailDTO> getAllMaterial() throws SQLException, ClassNotFoundException ;
 

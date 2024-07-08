@@ -13,10 +13,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
-import lk.ijse.bo.custome.BatchBO;
-import lk.ijse.bo.custome.MachineBO;
-import lk.ijse.bo.impl.BatchBOImpl;
-import lk.ijse.bo.impl.MachineBOImpl;
+import lk.ijse.bo.custome.*;
+import lk.ijse.bo.impl.*;
 import lk.ijse.dao.custome.*;
 import lk.ijse.dao.impl.*;
 import lk.ijse.dto.*;
@@ -136,12 +134,11 @@ public class BatchFormController {
     @FXML
     private TableColumn<?, ?> colColor;
     BatchBO batchBO = new BatchBOImpl();
-    BatchMachineDAO batchMachineDAO = new BatchMachinDAOImpl();
-    BatchMaterialDAO batchMaterialDAO = new BatchMaterialDAOImpl();
+    BatchMachineBO batchMachineBO = new BatchMachineBOImpl();
+    BatchMaterialBO batchMaterialBO = new BatchMaterialBOImpl();
     EmployeeDAO employeeDAO = new EmployeeDAOImpl();
-    //MachineDAO machineDAO = new MachineDAOImpl();
     MachineBO machineBO = new MachineBOImpl();
-    MaterialDAO materialDAO = new MaterialDAOImpl();
+    MaterialBO materialBO = new MaterialBOImpl();
     OrderDAO orderDAO = new OrderDAOImpl();
 
     @SneakyThrows
@@ -172,7 +169,7 @@ public class BatchFormController {
     private void loadAllMaterialDetail() {
         ObservableList<MatirialTm> obList = FXCollections.observableArrayList();
         try {
-            List<MaterialDTO> materialList = materialDAO.getAll();
+            List<MaterialDTO> materialList = materialBO.getAllMaterial();
             for (MaterialDTO material : materialList) {
                 final MaterialDTO material1 = material;
 
@@ -197,7 +194,7 @@ public class BatchFormController {
 
                         try {
                            // boolean isSaved = BatchMaterialRepo.save(batchMaterial);
-                            if (batchMaterialDAO.save(new BatchMaterialDTO(id,BaId))){
+                            if (batchMaterialBO.saveBatchMaterial(new BatchMaterialDTO(id,BaId))){
                                 new Alert(Alert.AlertType.CONFIRMATION,"material is saved").show();
                             }
                         } catch (SQLException ex) {
@@ -256,7 +253,7 @@ public class BatchFormController {
 
                         try {
                            // boolean isSaved = BatchMachineRepo.save(batchMachine);
-                            if (batchMachineDAO.save(new BatchMachineDTO(MaId,BaId,date))){
+                            if (batchMachineBO.saveBatchMachine(new BatchMachineDTO(MaId,BaId,date))){
                                 new Alert(Alert.AlertType.CONFIRMATION,"machine is saved").show();
                             }
                         } catch (SQLException ex) {

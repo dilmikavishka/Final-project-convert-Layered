@@ -15,19 +15,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
-import lk.ijse.bo.custome.BatchBO;
-import lk.ijse.bo.custome.CustomerBO;
-import lk.ijse.bo.impl.BatchBOImpl;
-import lk.ijse.bo.impl.CustomerBOImpl;
-import lk.ijse.dao.QueryDAO;
-import lk.ijse.dao.QueryDAOImpl;
-import lk.ijse.dao.custome.BatchDAO;
+import lk.ijse.bo.custome.*;
+import lk.ijse.bo.impl.*;
 import lk.ijse.dao.custome.CustomerDAO;
-import lk.ijse.dao.custome.OrderDAO;
-import lk.ijse.dao.impl.BatchDAOImpl;
 import lk.ijse.dao.impl.CustomerDAOImpl;
-import lk.ijse.dao.impl.OrderDAOImpl;
-import lk.ijse.bo.impl.PlaceOrderBOImpl;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.*;
 import lk.ijse.entity.*;
@@ -119,10 +110,9 @@ public class PlaceOrderFormController {
     private JFXComboBox<String> comCustomerTel;
     private ObservableList<PlaceOrderTm> obList = FXCollections.observableArrayList();
     CustomerDAO customerDAO = new CustomerDAOImpl();
-    CustomerBO customerBO = new CustomerBOImpl();
-    BatchDAO batchDAO = new BatchDAOImpl();
     BatchBO batchBO = new BatchBOImpl();
-    OrderDAO orderDAO = new OrderDAOImpl();
+    OrderBO orderBO = new OrderBOImpl();
+    PlaceOrderBO placeOrderBO = new PlaceOrderBOImpl();
 
     @SneakyThrows
     public void initialize() {
@@ -155,7 +145,7 @@ public class PlaceOrderFormController {
     private void getBatchIds() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> batIdList = batchDAO.getBatchIds();
+            List<String> batIdList = placeOrderBO.getBatchIds();
 
             for (String id : batIdList) {
                 obList.add(id);
@@ -172,7 +162,7 @@ public class PlaceOrderFormController {
     private void getCustomerTel() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> telList = customerDAO.geCustomerTel();
+            List<String> telList = placeOrderBO.getCustomerTel();
 
             for (String tel : telList) {
                 obList.add(tel);
@@ -187,29 +177,8 @@ public class PlaceOrderFormController {
         }
     }
 
-   // String nextOrderId = "";
-   /* private void getCurrentOrderIds() {
-        try {
-            String currentId = OrderDAOImpl.ganerateNextId();
-
-            nextOrderId = generateNexrOrderId(currentId);
-            lblOrderId.setText(nextOrderId);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String generateNexrOrderId(String currentId) {
-        if(currentId != null) {
-            String[] split = currentId.split("O");
-            int idNum = Integer.parseInt(split[1]);
-            return "O" + String.format("%03d", ++idNum);
-        }
-        return "O001";
-    }*/
    private void generateNextOrderId() throws SQLException, ClassNotFoundException {
-       String id = orderDAO.generateNextId();
+       String id = orderBO.generateNextIdOrder();
        lblOrderId.setText(id);
    }
 
@@ -326,7 +295,7 @@ public class PlaceOrderFormController {
 
 
         try {
-            boolean isPlaced = PlaceOrderBOImpl.placeOrder(order,odList);
+            boolean isPlaced = placeOrderBO.placeOrder(order,odList);
             System.out.println("pppp");
             if (isPlaced){
                 new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
@@ -400,12 +369,8 @@ public class PlaceOrderFormController {
             if (customer != null){
                 lblCustomerId.setText(customer.getId());
             }
-
-
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -428,8 +393,7 @@ public class PlaceOrderFormController {
     }
 
     private String calculateNetTotal(String orderId) throws SQLException, ClassNotFoundException {
-        QueryDAO queryDAO = new QueryDAOImpl();
-        return queryDAO.calculateNetTotalOrder(orderId);
+        return placeOrderBO.calculateNetTotalOrder(orderId);
     }
 
 
@@ -439,7 +403,7 @@ public class PlaceOrderFormController {
         String enteredText = comCustomerTel.getEditor().getText();
 
         try {
-            List<String> conList = customerDAO.geCustomerTel();
+            List<String> conList = placeOrderBO.getCustomerTel();
 
             for (String con : conList){
                 if (con.contains(enteredText)){

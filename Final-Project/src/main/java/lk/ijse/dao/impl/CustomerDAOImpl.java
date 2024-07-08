@@ -12,19 +12,13 @@ import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO {
     public  Customer searchByTel(String tel) throws SQLException, ClassNotFoundException {
-//        String sql = "SELECT * FROM customer WHERE customerCon_Number = ?";
-//
-//        Connection connection = DbConnection.getInstance().getConnection();
-//        PreparedStatement pstm = connection.prepareStatement(sql);
-//        pstm.setObject(1, tel);
-
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM customer WHERE customerCon_Number = ?",tel);
         if (resultSet.next()) {
             Customer customer = new Customer(
-                    resultSet.getString("customerId"),
-                    resultSet.getString("customerName"),
-                    resultSet.getString("customerCon_Number"),
-                    resultSet.getString("customeraddress"));
+                    resultSet.getString(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4));
 
             return customer;
         }
@@ -32,10 +26,8 @@ public class CustomerDAOImpl implements CustomerDAO {
         return null;
     }
 
-    public  List<String> geCustomerTel() throws SQLException, ClassNotFoundException {
-       /* String sql = "SELECT customerCon_Number FROM customer";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-*/
+    @Override
+    public List<String> getCustomerTel() throws SQLException, ClassNotFoundException {
         List<String> telList = new ArrayList<>();
 
         ResultSet resultSet = SQLUtil.execute( "SELECT customerCon_Number FROM customer");
@@ -45,6 +37,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
         return telList;
     }
+
 
     public List<Customer> getAll() throws SQLException, ClassNotFoundException {
       /*  String sql = "SELECT * FROM customer WHERE  status = 'ACTIVE'";

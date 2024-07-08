@@ -13,7 +13,9 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
 import lk.ijse.bo.custome.CustomerBO;
+import lk.ijse.bo.custome.OrderBO;
 import lk.ijse.bo.impl.CustomerBOImpl;
+import lk.ijse.bo.impl.OrderBOImpl;
 import lk.ijse.dao.custome.CustomerDAO;
 import lk.ijse.dao.custome.OrderDAO;
 import lk.ijse.dao.impl.CustomerDAOImpl;
@@ -79,7 +81,7 @@ public class OderFormController {
     CustomerDAO customerDAO = new CustomerDAOImpl();
 
     CustomerBO customerBO = new CustomerBOImpl();
-    OrderDAO orderDAO = new OrderDAOImpl();
+   OrderBO orderBO = new OrderBOImpl();
 
     @SneakyThrows
     public void initialize() {
@@ -91,7 +93,7 @@ public class OderFormController {
     }
 
     private void generateNextOrderId() throws SQLException, ClassNotFoundException {
-        String id = orderDAO.generateNextId();
+        String id = orderBO.generateNextIdOrder();
         txtOrderId.setText(id);
     }
 
@@ -135,7 +137,7 @@ public class OderFormController {
             return;
         }
         try {
-            if (orderDAO.delete(oId)){
+            if (orderBO.deleteOrder(oId)){
                 new Alert(Alert.AlertType.CONFIRMATION,"Order is deleted!").show();
             }
         } catch (SQLException e) {
@@ -158,7 +160,7 @@ public class OderFormController {
             return;
         }
         try {
-            if (orderDAO.saveOrder(new OrderDTO(oId, date, CusId))){
+            if (orderBO.saveOrder(new OrderDTO(oId, date, CusId))){
                 new Alert(Alert.AlertType.CONFIRMATION,"Order is saved!").show();
             }
         } catch (SQLException e) {
@@ -177,7 +179,7 @@ public class OderFormController {
     private void loadAllOrders() {
         ObservableList<OrderTm> obList = FXCollections.observableArrayList();
         try {
-            List<OrderDTO> orderList = orderDAO.getAll();
+            List<OrderDTO> orderList = orderBO.getAllOrder();
             for (OrderDTO order : orderList){
                 OrderTm tm = new OrderTm(order.getOId(), order.getDate(), order.getCusId());
                 obList.add(tm);
@@ -201,7 +203,7 @@ public class OderFormController {
             return;
         }
         try {
-            if (orderDAO.update(new OrderDTO(oId, date, CusId))){
+            if (orderBO.updateOrder(new OrderDTO(oId, date, CusId))){
                 new Alert(Alert.AlertType.CONFIRMATION,"Order is updated!").show();
             }
         } catch (SQLException e) {
@@ -226,7 +228,7 @@ public class OderFormController {
     @FXML
     void txtSearchOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String id = txtOrderId.getText();
-        OrderDTO order = orderDAO.searchById(id);
+        OrderDTO order = orderBO.searchByIdOrder(id);
         if (order != null) {
             txtOrderId.setText(order.getOId());
             txtOrderDate.setText(String.valueOf(order.getDate()));

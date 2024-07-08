@@ -4,6 +4,7 @@ import lk.ijse.dao.SQLUtil;
 import lk.ijse.dao.custome.SupplierDAO;
 import lk.ijse.dto.SupplierDTO;
 import lk.ijse.entity.Batch;
+import lk.ijse.entity.Supplier;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class SupplierDAOImpl implements SupplierDAO {
         return payList;
     }
 
-    public  SupplierDTO searchById(String supId) throws SQLException, ClassNotFoundException {
+    public Supplier searchById(String supId) throws SQLException, ClassNotFoundException {
       /*  String sql = "SELECT * FROM supplier WHERE supplierId = ?";
 
         Connection connection = DbConnection.getInstance().getConnection();
@@ -36,7 +37,7 @@ public class SupplierDAOImpl implements SupplierDAO {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM supplier WHERE supplierId = ?",supId);
 
         if (resultSet.next()){
-            SupplierDTO supplier = new SupplierDTO(
+            Supplier supplier = new Supplier(
             resultSet.getString(1),
             resultSet.getString(2),
             Date.valueOf(resultSet.getString(3)),
@@ -57,7 +58,7 @@ public class SupplierDAOImpl implements SupplierDAO {
         return SQLUtil.execute("UPDATE supplier SET status = 'DELETE' WHERE supplierId = ?",supId);
     }
 
-    public  boolean save(SupplierDTO supplier) throws SQLException, ClassNotFoundException {
+    public  boolean save(Supplier supplier) throws SQLException, ClassNotFoundException {
        /* String sql = "INSERT INTO supplier VALUES(?,?,?,?,?,'ACTIVE')";
         Connection connection = DbConnection.getInstance().getConnection();
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -70,7 +71,7 @@ public class SupplierDAOImpl implements SupplierDAO {
         return SQLUtil.execute("INSERT INTO supplier VALUES(?,?,?,?,?,'ACTIVE')",supplier.getSupId(),supplier.getName(),supplier.getDate(),supplier.getTel(),supplier.getPayId());
     }
 
-    public List<SupplierDTO> getAll() throws SQLException, ClassNotFoundException {
+    public List<Supplier> getAll() throws SQLException, ClassNotFoundException {
    /*     String sql = "SELECT * FROM supplier WHERE  status = 'ACTIVE'";
         PreparedStatement pstm = DbConnection.getInstance().
                 getConnection().
@@ -78,10 +79,10 @@ public class SupplierDAOImpl implements SupplierDAO {
 
         ResultSet resultSet =SQLUtil.execute("SELECT * FROM supplier WHERE  status = 'ACTIVE'");
 
-        List<SupplierDTO> supplierList = new ArrayList<>();
+        List<Supplier> supplierList = new ArrayList<>();
 
         while (resultSet.next()){
-            SupplierDTO supplier = new SupplierDTO(
+            Supplier supplier = new Supplier(
             resultSet.getString(1),
             resultSet.getString(2),
             Date.valueOf(resultSet.getString(3)),
@@ -94,7 +95,7 @@ public class SupplierDAOImpl implements SupplierDAO {
 
     }
 
-    public  boolean update(SupplierDTO supplier) throws SQLException, ClassNotFoundException {
+    public  boolean update(Supplier supplier) throws SQLException, ClassNotFoundException {
      /*   String sql = "UPDATE supplier SET supplierName = ? , supplierDate = ? , supplierC0n_Number = ?,paymentId = ?  WHERE supplierId = ?";
         PreparedStatement pstm = DbConnection.getInstance().
                 getConnection().

@@ -6,6 +6,6 @@ import lk.ijse.entity.BatchMaterial;
 
 import java.sql.SQLException;
 
-public interface BatchMaterialDAO extends CrudDAO<BatchMaterialDTO> {
+public interface BatchMaterialDAO extends CrudDAO<BatchMaterial> {
    // public  boolean saveBatchMaterial(BatchMaterialDTO batchMaterialDTO) throws SQLException, ClassNotFoundException;
 }

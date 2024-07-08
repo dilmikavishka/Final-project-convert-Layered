@@ -55,16 +55,7 @@ public class CustomerBOImpl implements CustomerBO {
        return customerDAO.getCustomerIds();
     }
 
-    @Override
-    public List<String> geCustomerTel() throws SQLException, ClassNotFoundException {
-        return customerDAO.geCustomerTel();
-    }
 
-    @Override
-    public CustomerDTO searchByCustomerTel(String tel) throws SQLException, ClassNotFoundException {
-        Customer customer = customerDAO.searchByTel(tel);
-        return new CustomerDTO(customer.);
-    }
 
 
 }

@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.dao.custome.SecurityDAO;
+import lk.ijse.dao.impl.SecurityDAOImpl;
 import lk.ijse.db.DbConnection;
 
 import java.io.IOException;
@@ -33,6 +35,8 @@ public class EnterPasswordFormController {
     @FXML
     private PasswordField txtNewPasswordA;
     private boolean isPasswordVisible = false;
+
+    SecurityDAO securityDAO = new SecurityDAOImpl();
     @FXML
     void btnBackOnAction(ActionEvent event) throws IOException {
         AnchorPane loginPane = FXMLLoader.load(this.getClass().getResource("/view/LoginForm.fxml"));
@@ -45,21 +49,18 @@ public class EnterPasswordFormController {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws SQLException {
+    void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String newPassword = txtNewPassword.getText();
         String conPassword = txtConformPassword.getText();
 
         if (newPassword.equalsIgnoreCase(conPassword)){
-            String sql = "UPDATE user SET password = ? WHERE userId = 'U001'";
-            try (PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql)) {
-                pstm.setString(1, newPassword);
-                if (pstm.executeUpdate() > 0){
+                if (securityDAO.updatePassword(newPassword)){
                     new Alert(Alert.AlertType.CONFIRMATION, "Password Updated!!").show();
+
                 }
                 txtConformPassword.setStyle("-fx-border-color: green;");
                 txtNewPassword.setStyle("-fx-border-color: green;");
-            }
-        } else {
+            } else {
             txtConformPassword.setStyle("-fx-border-color: #e74c3c;");
             txtNewPassword.setStyle("-fx-border-color: #e74c3c;");
         }

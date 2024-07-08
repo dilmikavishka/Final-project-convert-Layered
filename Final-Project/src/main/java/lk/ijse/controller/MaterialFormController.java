@@ -13,6 +13,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.custome.MaterialBO;
+import lk.ijse.bo.impl.MaterialBOImpl;
 import lk.ijse.dao.custome.MaterialDAO;
 import lk.ijse.dao.custome.SupplierDAO;
 import lk.ijse.dao.impl.MaterialDAOImpl;
@@ -91,7 +93,8 @@ public class MaterialFormController {
     private TextField txtSupId;
     @FXML
     private JFXButton btnMaterialsDetail;
-    MaterialDAO materialDAO = new MaterialDAOImpl();
+   // MaterialDAO materialDAO = new MaterialDAOImpl();
+    MaterialBO materialBO = new MaterialBOImpl();
     SupplierDAO supplierDAO = new SupplierDAOImpl();
 
     @SneakyThrows
@@ -105,7 +108,7 @@ public class MaterialFormController {
     }
 
     private void generateNextMaterialId() throws SQLException, ClassNotFoundException {
-        String id = materialDAO.generateNextId();
+        String id = materialBO.generateNextIdMaterial();
         txtMatId.setText(id);
     }
 
@@ -161,7 +164,7 @@ public class MaterialFormController {
             if (!isValied()) {
                 new Alert(Alert.AlertType.ERROR,"please check the fields",ButtonType.OK).show();
             }
-            if(materialDAO.delete(id)) {
+            if(materialBO.deleteMaterial(id)) {
                 new Alert(Alert.AlertType.CONFIRMATION, "customer deleted!").show();
             }
         } catch (SQLException e) {
@@ -192,7 +195,7 @@ public class MaterialFormController {
             if (!isValied()) {
                 new Alert(Alert.AlertType.ERROR,"please check the fields",ButtonType.OK).show();
             }
-            if(materialDAO.save(new MaterialDTO(id,name,date,qty,supId,price))) {
+            if(materialBO.saveMaterial(new MaterialDTO(id,name,date,qty,supId,price))) {
                 new Alert(Alert.AlertType.CONFIRMATION, "customer deleted!").show();
             }
         } catch (SQLException e) {
@@ -215,7 +218,7 @@ public class MaterialFormController {
     private void loadAllMaterial() {
         ObservableList<MatirialTm> obList = FXCollections.observableArrayList();
         try {
-            List<MaterialDTO> materialList = materialDAO.getAll();
+            List<MaterialDTO> materialList = materialBO.getAllMaterial();
             for( MaterialDTO material : materialList){
                 MatirialTm tm = new MatirialTm(material.getId(), material.getName(), material.getDate(), material.getMatQty(), material.getSupId(), material.getPrice(), new JFXButton());
                 obList.add(tm);
@@ -243,7 +246,7 @@ public class MaterialFormController {
             if (!isValied()) {
                 new Alert(Alert.AlertType.ERROR,"please check the fields",ButtonType.OK).show();
             }
-            if(materialDAO.update(new MaterialDTO(id,name,date,qty,supId,price))) {
+            if(materialBO.updateMaterial(new MaterialDTO(id,name,date,qty,supId,price))) {
                 new Alert(Alert.AlertType.CONFIRMATION, "customer deleted!").show();
             }
         } catch (SQLException e) {
@@ -271,7 +274,7 @@ public class MaterialFormController {
     void txtSearchOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String id = txtMatId.getText();
 
-        MaterialDTO material = materialDAO.searchById(id);
+        MaterialDTO material = materialBO.searchByIdMaterial(id);
 
         if (material != null) {
             txtMatId.setText(material.getId());

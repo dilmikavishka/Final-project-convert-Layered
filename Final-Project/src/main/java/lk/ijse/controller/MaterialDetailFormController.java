@@ -10,6 +10,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.bo.custome.MaterialDetailBO;
+import lk.ijse.bo.impl.MaterialDetailBOImpl;
 import lk.ijse.dao.custome.BatchDAO;
 import lk.ijse.dao.custome.MaterialDetailDAO;
 import lk.ijse.dao.impl.BatchDAOImpl;
@@ -58,7 +60,7 @@ public class MaterialDetailFormController {
     @FXML
     private TableView<MaterialDetailTm> tblMaterialsDetails;
     BatchDAO batchDAO = new BatchDAOImpl();
-    MaterialDetailDAO materialDetailDAO = new MaterialDetailDAOImpl();
+   MaterialDetailBO materialDetailBO = new MaterialDetailBOImpl();
 
     public void initialize() {
         setCellValueFactory();
@@ -74,7 +76,7 @@ public class MaterialDetailFormController {
     private void loadAllMaterialDetail() {
         ObservableList<MaterialDetailTm> obList = FXCollections.observableArrayList();
         try {
-            List<MaterialDetailDTO> mdList = materialDetailDAO.getAll();
+            List<MaterialDetailDTO> mdList = materialDetailBO.getAllMaterialDetail();
             for( MaterialDetailDTO md : mdList){
                 MaterialDetailTm tm = new MaterialDetailTm(md.getBatId(), md.getMatId(), md.getQty());
                 obList.add(tm);
@@ -107,7 +109,7 @@ public class MaterialDetailFormController {
         String id = comMaterialId.getValue();
 
         try {
-            materialDetailDAO.searchById(id);
+            materialDetailBO.searchByIdMaterialDetail(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -117,33 +119,3 @@ public class MaterialDetailFormController {
     }
 
 }
-
-
-/*@FXML
-void filterCustomerCon(KeyEvent event) {
-    ObservableList<String > filterCon = FXCollections.observableArrayList();
-    String enteredText = comCustTel.getEditor().getText();
-
-    try {
-        List<String> conList = CustomerRepo.getCon();
-
-        for (String con : conList){
-            if (con.contains(enteredText)){
-                filterCon.add(con);
-            }
-        }
-        comCustTel.setItems(filterCon);
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
-    }
-}
-
-comCustTel.setEditable(true);
-
-@FXML
-    void comCustTelOnMouseClicked(MouseEvent event) {
-        comCustTel.getSelectionModel().clearSelection();
-    }meka dann anthimata mouse
-
-
-*/

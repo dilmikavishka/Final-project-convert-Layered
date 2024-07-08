@@ -5,6 +5,7 @@ import lk.ijse.dao.custome.MaterialDAO;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.MaterialDTO;
 import lk.ijse.dto.MaterialDetailDTO;
+import lk.ijse.entity.Material;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -39,16 +40,16 @@ public class MaterialDAOImpl implements MaterialDAO {
     }
 
 
-    public List<MaterialDTO> getAll() throws SQLException, ClassNotFoundException {
+    public List<Material> getAll() throws SQLException, ClassNotFoundException {
         /*String sql = "SELECT * FROM  material WHERE status = 'ACTIVE'";
         PreparedStatement pstm = DbConnection.getInstance().
                 getConnection().
                 prepareStatement(sql);*/
 
         ResultSet resultSet = SQLUtil.execute( "SELECT * FROM  material WHERE status = 'ACTIVE'");
-        List<MaterialDTO> materialList = new ArrayList<>();
+        List<Material> materialList = new ArrayList<>();
         while(resultSet.next()){
-            MaterialDTO material = new MaterialDTO(
+            Material material = new Material(
             resultSet.getString("materialId"),
             resultSet.getString("name"),
             Date.valueOf(resultSet.getString("date")),
@@ -60,7 +61,7 @@ public class MaterialDAOImpl implements MaterialDAO {
         return materialList;
     }
 
-    public  boolean save(MaterialDTO material) throws SQLException, ClassNotFoundException {
+    public  boolean save(Material material) throws SQLException, ClassNotFoundException {
        /* String sql = "INSERT INTO material VALUES (?,?,?,?,?,?,'ACTIVE')";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setObject(1,materialDTO.getId());
@@ -73,7 +74,7 @@ public class MaterialDAOImpl implements MaterialDAO {
         return SQLUtil.execute("INSERT INTO material VALUES (?,?,?,?,?,?,'ACTIVE')",material.getId(),material.getName(),material.getDate(),material.getMatQty(),material.getSupId(),material.getPrice());
     }
 
-    public  boolean update(MaterialDTO material) throws SQLException, ClassNotFoundException {
+    public  boolean update(Material material) throws SQLException, ClassNotFoundException {
        /* String sql = "UPDATE material SET name = ?, date = ?, materialQty = ?, supplierId = ?,price = ? WHERE materialId = ?";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setObject(1,materialDTO.getName());
@@ -87,7 +88,7 @@ public class MaterialDAOImpl implements MaterialDAO {
 
     }
 
-    public  MaterialDTO searchById(String id) throws SQLException, ClassNotFoundException {
+    public  Material searchById(String id) throws SQLException, ClassNotFoundException {
       /*  String sql = "SELECT * FROM  material WHERE materialId = ? ";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setObject(1,id);*/
@@ -95,7 +96,7 @@ public class MaterialDAOImpl implements MaterialDAO {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM  material WHERE materialId = ? ",id);
 
         if (resultSet.next()){
-            MaterialDTO material = new MaterialDTO(
+            Material material = new Material(
                     resultSet.getString("materialId"),
                     resultSet.getString("name"),
                     Date.valueOf(resultSet.getString("date")),
@@ -115,9 +116,9 @@ public class MaterialDAOImpl implements MaterialDAO {
         ResultSet rst = SQLUtil.execute("SELECT materialId FROM material ORDER BY materialId DESC LIMIT 1");
 
         if (rst.next()) {
-            String batchId = rst.getString("materialId");
+            String materialId = rst.getString("materialId");
             String prefix = "M";
-            String[] split = batchId.split(prefix); // Split using the prefix
+            String[] split = materialId.split(prefix); // Split using the prefix
             int idNum = Integer.parseInt(split[1]);
             String nextId = prefix + String.format("%03d", ++idNum);
             return nextId;

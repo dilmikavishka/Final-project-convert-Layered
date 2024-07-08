@@ -12,6 +12,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.custome.PaymentBO;
+import lk.ijse.bo.custome.SupplierBO;
+import lk.ijse.bo.impl.PaymentBOImpl;
+import lk.ijse.bo.impl.SupplierBOImpl;
 import lk.ijse.dao.custome.PaymentDAO;
 import lk.ijse.dao.custome.SupplierDAO;
 import lk.ijse.dao.impl.PaymentDAOImpl;
@@ -90,8 +94,8 @@ public class SupplierFormController {
 
     @FXML
     private JFXButton btnSupList;
-    PaymentDAO paymentDAO = new PaymentDAOImpl();
-    SupplierDAO supplierDAO = new SupplierDAOImpl();
+    PaymentBO paymentBO = new PaymentBOImpl();
+    SupplierBO supplierBO = new SupplierBOImpl();
 
 
     @SneakyThrows
@@ -104,7 +108,7 @@ public class SupplierFormController {
     }
 
     private void generateNextSupplierId() throws SQLException, ClassNotFoundException {
-        String id = supplierDAO.generateNextId();
+        String id = supplierBO.generateNextIdSupplier();
         txtSupId.setText(id);
     }
 
@@ -119,7 +123,7 @@ public class SupplierFormController {
     private void getPayIds() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> payList = paymentDAO.getPaymentId();
+            List<String> payList = paymentBO.getPaymentId();
             for (String id : payList){
                 obList.add(id);
             }
@@ -158,7 +162,7 @@ public class SupplierFormController {
             if (!isValied()) {
                 new Alert(Alert.AlertType.ERROR,"check fiels", ButtonType.OK).show();
             }
-            if(supplierDAO.delete(SupId)) {
+            if(supplierBO.deleteSupplier(SupId)) {
                 new Alert(Alert.AlertType.CONFIRMATION, "Supplier deleted!").show();
             }
         } catch (SQLException e) {
@@ -185,7 +189,7 @@ public class SupplierFormController {
                 return;
             }
 
-            if (supplierDAO.save(new SupplierDTO(SupId,name,date,tel,payId))){
+            if (supplierBO.saveSupplier(new SupplierDTO(SupId,name,date,tel,payId))){
                 new Alert(Alert.AlertType.CONFIRMATION,"Supplier is Save").show();
             }
         } catch (SQLException e) {
@@ -213,7 +217,7 @@ public class SupplierFormController {
         String payId = comPayId.getValue();
 
         try {
-            PaymentDTO payment = paymentDAO.searchById(payId);
+            PaymentDTO payment = paymentBO.searchByIdPayment(payId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -224,7 +228,7 @@ public class SupplierFormController {
     private void loadAllSupplier() {
         ObservableList<SupplierTm> obList = FXCollections.observableArrayList();
         try {
-            List<SupplierDTO> supplierList = supplierDAO.getAll();
+            List<SupplierDTO> supplierList = supplierBO.getAllSupplier();
             for( SupplierDTO supplier : supplierList){
                 SupplierTm tm = new SupplierTm(supplier.getSupId(), supplier.getName(), supplier.getDate(), supplier.getTel(), supplier.getPayId());
                 obList.add(tm);
@@ -255,7 +259,7 @@ public class SupplierFormController {
         }
 
         try {
-            if (supplierDAO.update(new SupplierDTO(SupId,name,date,tel,payId))){
+            if (supplierBO.updateSupplier(new SupplierDTO(SupId,name,date,tel,payId))){
                 new Alert(Alert.AlertType.CONFIRMATION,"Supplier is update").show();
             }
         } catch (SQLException e) {
@@ -272,7 +276,7 @@ public class SupplierFormController {
     void txtSearchOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String id = txtSupId.getText();
 
-        SupplierDTO supplier = supplierDAO.searchById(id);
+        SupplierDTO supplier = supplierBO.searchByIdSupplier(id);
 
         if (supplier != null) {
             txtSupId.setText(supplier.getSupId());

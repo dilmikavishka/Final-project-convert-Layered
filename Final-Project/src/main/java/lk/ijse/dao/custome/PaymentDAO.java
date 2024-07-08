@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface PaymentDAO extends CrudDAO<PaymentDTO> {
+public interface PaymentDAO extends CrudDAO<Payment> {
    /* public  List<PaymentDTO> getAllPayment() throws SQLException, ClassNotFoundException ;
 
     public  boolean deletePayement(String id) throws SQLException, ClassNotFoundException ;

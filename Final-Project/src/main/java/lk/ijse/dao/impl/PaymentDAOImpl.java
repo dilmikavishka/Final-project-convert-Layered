@@ -4,6 +4,7 @@ import lk.ijse.dao.SQLUtil;
 import lk.ijse.dao.custome.PaymentDAO;
 import lk.ijse.dto.PaymentDTO;
 import lk.ijse.entity.Batch;
+import lk.ijse.entity.Payment;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -12,16 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentDAOImpl implements PaymentDAO {
-    public List<PaymentDTO> getAll() throws SQLException, ClassNotFoundException {
+    public List<Payment> getAll() throws SQLException, ClassNotFoundException {
         /*String sql = "SELECT * FROM  payment WHERE status = 'ACTIVE' ";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
 */
         ResultSet resultSet = SQLUtil.execute( "SELECT * FROM  payment WHERE status = 'ACTIVE' ");
 
-        List<PaymentDTO> payList = new ArrayList<>();
+        List<Payment> payList = new ArrayList<>();
 
         while(resultSet.next()){
-            PaymentDTO payment = new PaymentDTO(
+            Payment payment = new Payment(
             resultSet.getString("paymentId"),
             Date.valueOf(resultSet.getString("paymentDate")),
             Double.parseDouble(resultSet.getString("amount")),
@@ -41,7 +42,7 @@ public class PaymentDAOImpl implements PaymentDAO {
         return SQLUtil.execute("UPDATE payment SET status = 'DELETE' WHERE paymentId = ?",id);
     }
 
-    public  boolean save(PaymentDTO payment) throws SQLException, ClassNotFoundException {
+    public  boolean save(Payment payment) throws SQLException, ClassNotFoundException {
        /* String sql = "INSERT INTO payment VALUES (?,?,?,?,?,'ACTIVE')";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setObject(1,paymentDTO.getPaymentId());
@@ -53,7 +54,7 @@ public class PaymentDAOImpl implements PaymentDAO {
         return SQLUtil.execute("INSERT INTO payment VALUES (?,?,?,?,?,'ACTIVE')",payment.getPaymentId(),payment.getPaymentDate(),payment.getAmount(),payment.getType(),payment.getOId());
     }
 
-    public  boolean update(PaymentDTO payment) throws SQLException, ClassNotFoundException {
+    public  boolean update(Payment payment) throws SQLException, ClassNotFoundException {
        /* String sql = "UPDATE payment SET paymentDate = ?,amount = ?,type = ?,orderId = ? WHERE paymentId = ?";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setObject(1,paymentDTO.getPaymentDate());
@@ -65,7 +66,7 @@ public class PaymentDAOImpl implements PaymentDAO {
         return SQLUtil.execute("UPDATE payment SET paymentDate = ?,amount = ?,type = ?,orderId = ? WHERE paymentId = ?",payment.getPaymentDate(),payment.getAmount(),payment.getType(),payment.getOId(),payment.getPaymentId());
     }
 
-    public  PaymentDTO searchById(String id) throws SQLException, ClassNotFoundException {
+    public  Payment searchById(String id) throws SQLException, ClassNotFoundException {
        /* String sql = "SELECT * FROM  payment WHERE paymentId = ? ";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setObject(1,id);*/
@@ -73,7 +74,7 @@ public class PaymentDAOImpl implements PaymentDAO {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM  payment WHERE paymentId = ? ",id);
 
         if (resultSet.next()){
-            PaymentDTO payment = new PaymentDTO(
+            Payment payment = new Payment(
                     resultSet.getString("paymentId"),
                     Date.valueOf(resultSet.getString("paymentDate")),
                     Double.parseDouble(resultSet.getString("amount")),
@@ -92,9 +93,9 @@ public class PaymentDAOImpl implements PaymentDAO {
         ResultSet rst = SQLUtil.execute("SELECT paymentId FROM payment ORDER BY paymentId DESC LIMIT 1");
 
         if (rst.next()) {
-            String batchId = rst.getString("paymentId");
+            String paymentId = rst.getString("paymentId");
             String prefix = "P";
-            String[] split = batchId.split(prefix); // Split using the prefix
+            String[] split = paymentId.split(prefix); // Split using the prefix
             int idNum = Integer.parseInt(split[1]);
             String nextId = prefix + String.format("%03d", ++idNum);
             return nextId;

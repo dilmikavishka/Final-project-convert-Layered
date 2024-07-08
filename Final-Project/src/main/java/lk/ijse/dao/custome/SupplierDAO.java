@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface SupplierDAO extends CrudDAO<SupplierDTO> {
+public interface SupplierDAO extends CrudDAO<Supplier> {
     public List<String> getSupplierId() throws SQLException, ClassNotFoundException;
 
    /* public  SupplierDTO searchBySupplierId(String supId) throws SQLException ;

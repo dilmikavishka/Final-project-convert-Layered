@@ -3,11 +3,12 @@ package lk.ijse.dao.custome;
 import lk.ijse.dao.CrudDAO;
 import lk.ijse.dto.MaterialDTO;
 import lk.ijse.dto.MaterialDetailDTO;
+import lk.ijse.entity.Material;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface MaterialDAO extends CrudDAO<MaterialDTO> {
+public interface MaterialDAO extends CrudDAO<Material> {
    /* public  List<MaterialDTO> getAllMaterial() throws SQLException, ClassNotFoundException ;
 
     public  boolean saveMaterial(MaterialDTO materialDTO) throws SQLException, ClassNotFoundException ;

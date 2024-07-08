@@ -1,23 +1,19 @@
-package lk.ijse.dao.impl;
+package lk.ijse.bo.impl;
 
-import lk.ijse.dao.custome.MachineDAO;
+import lk.ijse.bo.custome.BatchCostBO;
+import lk.ijse.bo.custome.MaterialDetailBO;
 import lk.ijse.dao.custome.MaterialDAO;
 import lk.ijse.dao.custome.MaterialDetailDAO;
+import lk.ijse.dao.impl.MaterialDAOImpl;
+import lk.ijse.dao.impl.MaterialDetailDAOImpl;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.BatchCostDTO;
-import lk.ijse.dto.MaterialDTO;
-import lk.ijse.dto.MaterialDetailDTO;
-import lk.ijse.entity.BatchCost;
-import lk.ijse.repository.MaterialDetailRepo;
-import lk.ijse.repository.MaterialRepo;
+import lk.ijse.entity.MaterialDetail;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
-public class BatchCostDAOImpl {
+public class BatchCostBOImpl implements BatchCostBO {
 
     public static boolean placeCost(BatchCostDTO bc) throws SQLException {
         MaterialDAO materialDAO = new MaterialDAOImpl();
@@ -30,7 +26,7 @@ public class BatchCostDAOImpl {
             boolean isMaterialUpdate = materialDAO.updateCost(bc.getBcList());
             System.out.println("ddd");
             if (isMaterialUpdate) {
-                boolean isMaterialDetailSave = materialDetailDAO.save(bc.getBcList());
+                boolean isMaterialDetailSave = materialDetailDAO.saveMd(bc.getBcList());
                 System.out.println("sss");
                 if (isMaterialDetailSave) {
                     connection.commit();

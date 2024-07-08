@@ -4,6 +4,7 @@ import lk.ijse.bo.custome.BatchBO;
 import lk.ijse.dao.custome.BatchDAO;
 import lk.ijse.dao.impl.BatchDAOImpl;
 import lk.ijse.dto.BatchDTO;
+import lk.ijse.dto.OredrDetailDTO;
 import lk.ijse.entity.Batch;
 
 import java.sql.SQLException;
@@ -48,5 +49,20 @@ public class BatchBOImpl implements BatchBO {
     @Override
     public String generateNextIdBatch() throws SQLException, ClassNotFoundException {
         return batchDAO.generateNextId();
+    }
+
+    @Override
+    public List<String> getBatchIds() throws SQLException, ClassNotFoundException {
+        return batchDAO.getBatchIds();
+    }
+
+    @Override
+    public boolean qtyUpdate(List<OredrDetailDTO> odList) throws SQLException, ClassNotFoundException {
+        return batchDAO.qtyUpdate(odList);
+    }
+
+    @Override
+    public boolean updateQty(String batId, int qty) throws SQLException, ClassNotFoundException {
+        return batchDAO.updateQty(batId,qty);
     }
 }

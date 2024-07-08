@@ -1,12 +1,12 @@
-package lk.ijse.dao;
+package lk.ijse.dao.impl;
 
-import lk.ijse.db.DbConnection;
+import lk.ijse.dao.SQLUtil;
+import lk.ijse.dao.custome.QueryDAO;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class QueryDAOImpl implements QueryDAO{
+public class QueryDAOImpl implements QueryDAO {
 
     @Override
     public String calculateNetTotalOrder(String orderId) throws SQLException, ClassNotFoundException {

@@ -4,6 +4,7 @@ import lk.ijse.dao.SQLUtil;
 import lk.ijse.dao.custome.OrderDAO;
 import lk.ijse.dto.OrderDTO;
 import lk.ijse.entity.Batch;
+import lk.ijse.entity.Order;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,15 +24,14 @@ public class OrderDAOImpl implements OrderDAO {
         }
         return orderList;
     }
-
-    public  OrderDTO searchById(String id) throws SQLException, ClassNotFoundException {
+    public Order searchById(String id) throws SQLException, ClassNotFoundException {
         /*String sql = "SELECT * FROM orders WHERE orderId = ?";
         Connection connection = DbConnection.getInstance().getConnection();
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setObject(1, id);*/
         ResultSet resultSet = SQLUtil.execute( "SELECT * FROM orders WHERE orderId = ?",id);
         if (resultSet.next()){
-            OrderDTO order = new OrderDTO(
+            Order order = new Order(
             resultSet.getString("orderId"),
             Date.valueOf(resultSet.getString("orderDate")),
             resultSet.getString("customerId"));
@@ -66,7 +66,7 @@ public class OrderDAOImpl implements OrderDAO {
         return SQLUtil.execute("UPDATE orders SET status = 'DELETE' WHERE orderId = ?",oId);
     }
 
-    public  boolean saveOrder(OrderDTO order) throws SQLException, ClassNotFoundException {
+    public  boolean save(Order order) throws SQLException, ClassNotFoundException {
     /*    String sql = "INSERT INTO orders VALUES(?,?,?,'ACTIVE')";
         Connection connection = DbConnection.getInstance().getConnection();
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -77,16 +77,16 @@ public class OrderDAOImpl implements OrderDAO {
         return SQLUtil.execute("INSERT INTO orders VALUES(?,?,?,'ACTIVE')",order.getOId(),order.getDate(),order.getCusId());
     }
 
-    public List<OrderDTO> getAll() throws SQLException, ClassNotFoundException {
+    public List<Order> getAll() throws SQLException, ClassNotFoundException {
        /* String sql = "SELECT * FROM orders WHERE  status = 'ACTIVE'";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
 
     */    ResultSet resultSet = SQLUtil.execute("SELECT * FROM orders WHERE  status = 'ACTIVE'");
 
-        List<OrderDTO> orderList = new ArrayList<>();
+        List<Order> orderList = new ArrayList<>();
 
         while (resultSet.next()){
-            OrderDTO order = new OrderDTO(
+            Order order = new Order(
             resultSet.getString("orderId"),
             Date.valueOf(resultSet.getString("orderDate")),
             resultSet.getString("customerId"));
@@ -96,12 +96,8 @@ public class OrderDAOImpl implements OrderDAO {
         return orderList;
     }
 
-    @Override
-    public boolean save(OrderDTO dto) throws SQLException, ClassNotFoundException {
-        return false;
-    }
 
-    public  boolean update(OrderDTO order) throws SQLException, ClassNotFoundException {
+    public  boolean update(Order order) throws SQLException, ClassNotFoundException {
      /*   String sql = "UPDATE orders SET orderDate = ? , customerId = ?  WHERE orderId = ?";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setObject(1,orderDTO.getDate());

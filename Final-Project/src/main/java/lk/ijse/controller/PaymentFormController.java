@@ -12,6 +12,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.custome.OrderBO;
+import lk.ijse.bo.custome.PaymentBO;
+import lk.ijse.bo.impl.OrderBOImpl;
+import lk.ijse.bo.impl.PaymentBOImpl;
 import lk.ijse.dao.custome.OrderDAO;
 import lk.ijse.dao.custome.PaymentDAO;
 import lk.ijse.dao.impl.OrderDAOImpl;
@@ -87,14 +91,14 @@ public class PaymentFormController {
     @FXML
     private JFXComboBox<String> comOrderId;
     OrderDAO orderDAO = new OrderDAOImpl();
-    PaymentDAO paymentDAO = new PaymentDAOImpl();
+   PaymentBO paymentBO = new PaymentBOImpl();
 
     @FXML
     void comOrderIdOnAction(ActionEvent event) {
         String oId = comOrderId.getValue();
 
         try {
-            OrderDTO order = orderDAO.searchById(oId);
+            Order order = orderDAO.searchById(oId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -117,7 +121,7 @@ public class PaymentFormController {
     }
 
     private void generateNextPaymentId() throws SQLException, ClassNotFoundException {
-        String id = paymentDAO.generateNextId();
+        String id = paymentBO.generateNextIdPayment();
         txtPaymentID.setText(id);
     }
 
@@ -149,7 +153,7 @@ public class PaymentFormController {
     private void loadAllPayments() {
         ObservableList<PaymentTm> obList = FXCollections.observableArrayList();
         try {
-            List<PaymentDTO> payList = paymentDAO.getAll();
+            List<PaymentDTO> payList = paymentBO.getAllPayment();
             for (PaymentDTO payment : payList){
                 PaymentTm tm = new PaymentTm(payment.getPaymentId(), payment.getPaymentDate(), payment.getAmount(), payment.getType(), payment.getOId());
                 obList.add(tm);
@@ -189,7 +193,7 @@ public class PaymentFormController {
             return;
         }
         try {
-            if (paymentDAO.delete(id)){
+            if (paymentBO.deletePayment(id)){
                 new Alert(Alert.AlertType.CONFIRMATION,"payment is deleted").show();
             }
         } catch (SQLException e) {
@@ -222,7 +226,7 @@ public class PaymentFormController {
         }
         try {
 
-            if (paymentDAO.save(new PaymentDTO(id,date,amount,type,oId))){
+            if (paymentBO.savePayment(new PaymentDTO(id,date,amount,type,oId))){
                 new Alert(Alert.AlertType.CONFIRMATION,"payment is saved").show();
             }
         } catch (SQLException e) {
@@ -255,7 +259,7 @@ public class PaymentFormController {
             return;
         }
         try {
-            if (paymentDAO.update(new PaymentDTO(id,date,amount,type,oId))){
+            if (paymentBO.updatePayment(new PaymentDTO(id,date,amount,type,oId))){
                 new Alert(Alert.AlertType.CONFIRMATION,"payment is updated!").show();
             }
         } catch (SQLException e) {
@@ -280,7 +284,7 @@ public class PaymentFormController {
         String id = txtPaymentID.getText();
 
         try {
-            PaymentDTO payment = paymentDAO.searchById(id);
+            PaymentDTO payment = paymentBO.searchByIdPayment(id);
             if (payment != null){
                 txtPaymentID.setText(payment.getPaymentId());
                 txtPaymentDate.setText(String.valueOf(payment.getPaymentDate()));

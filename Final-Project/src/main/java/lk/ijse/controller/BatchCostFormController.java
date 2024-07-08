@@ -13,25 +13,18 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
 import lk.ijse.bo.custome.BatchBO;
+import lk.ijse.bo.custome.MaterialBO;
 import lk.ijse.bo.impl.BatchBOImpl;
-import lk.ijse.dao.QueryDAO;
-import lk.ijse.dao.QueryDAOImpl;
-import lk.ijse.dao.custome.BatchDAO;
-import lk.ijse.dao.custome.MaterialDAO;
-import lk.ijse.dao.impl.BatchCostDAOImpl;
-import lk.ijse.dao.impl.BatchDAOImpl;
-import lk.ijse.dao.impl.MaterialDAOImpl;
+import lk.ijse.bo.impl.MaterialBOImpl;
+import lk.ijse.dao.custome.QueryDAO;
+import lk.ijse.dao.impl.QueryDAOImpl;
+import lk.ijse.bo.impl.BatchCostBOImpl;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.BatchCostDTO;
 import lk.ijse.dto.BatchDTO;
 import lk.ijse.dto.MaterialDTO;
 import lk.ijse.dto.MaterialDetailDTO;
-import lk.ijse.entity.Batch;
-import lk.ijse.entity.BatchCost;
-import lk.ijse.entity.Material;
-import lk.ijse.entity.MaterialDetail;
 import lk.ijse.Tm.BatchCostTm;
-import lk.ijse.repository.*;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -113,8 +106,7 @@ public class BatchCostFormController {
     private TextField txtQty;
     private ObservableList<BatchCostTm> obList = FXCollections.observableArrayList();
 
-    MaterialDAO materialDAO = new MaterialDAOImpl();
-    BatchDAO batchDAO = new BatchDAOImpl();
+    MaterialBO materialBO = new MaterialBOImpl();
     BatchBO batchBO = new BatchBOImpl();
 
     public void initialize() {
@@ -151,7 +143,7 @@ public class BatchCostFormController {
     private void getMaterialId() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> matIdList = materialDAO.getMaterialIds();
+            List<String> matIdList = materialBO.getMaterialIds();
 
             for (String id : matIdList) {
                 obList.add(id);
@@ -166,7 +158,7 @@ public class BatchCostFormController {
     private void getBatchIds() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> batIdList = batchDAO.getBatchIds();
+            List<String> batIdList = batchBO.getBatchIds();
 
             for (String id : batIdList) {
                 obList.add(id);
@@ -312,7 +304,7 @@ public class BatchCostFormController {
         }*/
 
         try {
-            boolean isPlaced = BatchCostDAOImpl.placeCost(bc);
+            boolean isPlaced = BatchCostBOImpl.placeCost(bc);
             System.out.println("pppp");
             if (isPlaced){
                 new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
@@ -342,7 +334,7 @@ public class BatchCostFormController {
         String matId = comMaterialId.getValue();
 
         try {
-            MaterialDTO material = materialDAO.searchById(matId);
+            MaterialDTO material = materialBO.searchByIdMaterial(matId);
             if(material != null) {
                 lblMatName.setText(material.getName());
                 lblPrice.setText(String.valueOf(material.getPrice()));

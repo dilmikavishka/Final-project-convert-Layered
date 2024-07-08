@@ -15,15 +15,15 @@ import java.util.List;
 
 public class MaterialDetailDAOImpl implements MaterialDetailDAO {
 
-    public List<MaterialDetailDTO> getAll() throws SQLException, ClassNotFoundException {
+    public List<MaterialDetail> getAll() throws SQLException, ClassNotFoundException {
        /* String sql = "SELECT * FROM material_details WHERE  status = 'ACTIVE'";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
 */
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM material_details WHERE  status = 'ACTIVE'");
-        List<MaterialDetailDTO> mdList = new ArrayList<>();
+        List<MaterialDetail> mdList = new ArrayList<>();
 
         while (resultSet.next()){
-            MaterialDetailDTO materialDetail = new MaterialDetailDTO(
+            MaterialDetail materialDetail = new MaterialDetail(
             resultSet.getString(1),
             resultSet.getString(2),
             Integer.parseInt(resultSet.getString(3)));
@@ -34,7 +34,7 @@ public class MaterialDetailDAOImpl implements MaterialDetailDAO {
     }
 
     @Override
-    public boolean save(MaterialDetailDTO md) throws SQLException, ClassNotFoundException {
+    public boolean save(MaterialDetail md) throws SQLException, ClassNotFoundException {
         String sql = "INSERT INTO material_details VALUES(?, ?, ?, 'ACTIVE')";
 
         PreparedStatement pstm = DbConnection.getInstance().getConnection()
@@ -53,18 +53,18 @@ public class MaterialDetailDAOImpl implements MaterialDetailDAO {
     }
 
     @Override
-    public boolean update(MaterialDetailDTO dto) throws SQLException, ClassNotFoundException {
+    public boolean update(MaterialDetail dto) throws SQLException, ClassNotFoundException {
         return false;
     }
 
-    public  MaterialDetailDTO searchById(String id) throws SQLException, ClassNotFoundException {
+    public  MaterialDetail searchById(String id) throws SQLException, ClassNotFoundException {
         /*String sql = "SELECT * FROM  material_details WHERE batchId = ? ";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setObject(1,id);*/
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM  material_details WHERE batchId = ? ",id);
 
         if (resultSet.next()){
-            MaterialDetailDTO materialDetail = new MaterialDetailDTO(
+            MaterialDetail materialDetail = new MaterialDetail(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     Integer.parseInt(resultSet.getString(3)));
@@ -81,7 +81,7 @@ public class MaterialDetailDAOImpl implements MaterialDetailDAO {
 
 
     @Override
-    public boolean save(List<MaterialDetailDTO> bcList) throws SQLException, ClassNotFoundException {
+    public boolean saveMd(List<MaterialDetailDTO> bcList) throws SQLException, ClassNotFoundException {
         for (MaterialDetailDTO md : bcList) {
             boolean isSaved = SQLUtil.execute("INSERT INTO material_details VALUES(?, ?, ?, 'ACTIVE')",md.getBatId(),md.getMatId(),md.getQty());
             if(!isSaved) {

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface OrderDAO extends CrudDAO<OrderDTO> {
+public interface OrderDAO extends CrudDAO<Order> {
     public  List<String> getOrderIds() throws SQLException, ClassNotFoundException ;
 
   /*  public  OrderDTO searchByOrderId(String id) throws SQLException, ClassNotFoundException ;
@@ -25,5 +25,4 @@ public interface OrderDAO extends CrudDAO<OrderDTO> {
     public  boolean updateOrder(OrderDTO orderDTO) throws SQLException, ClassNotFoundException ;
 
     public  String generateNextId() throws SQLException, ClassNotFoundException;*/
-  public  boolean saveOrder(OrderDTO order) throws SQLException, ClassNotFoundException;
 }
