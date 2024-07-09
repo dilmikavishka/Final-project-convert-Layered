@@ -69,9 +69,7 @@ public class OtpFormController {
     @FXML
     void btnBackOnAction(ActionEvent event) throws IOException {
         AnchorPane loginPane = FXMLLoader.load(this.getClass().getResource("/view/SendOtpForm.fxml"));
-
         Scene scene = new Scene(loginPane);
-
         Stage stage = (Stage) anpOtp1.getScene().getWindow();
         stage.setScene(scene);
         stage.centerOnScreen();

@@ -125,13 +125,10 @@ public class LoginFormController {
     @FXML
     void linkRegisterOnAction(ActionEvent event) throws IOException {
         Parent rootNode = FXMLLoader.load(this.getClass().getResource("/view/RegisterForm.fxml"));
-
         Scene scene = new Scene(rootNode);
         Stage stage = new Stage();
         stage.setScene(scene);
-
         stage.setTitle("Registration Form");
-
         stage.show();
 
     }

@@ -13,8 +13,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custome.*;
 import lk.ijse.bo.impl.*;
+import lk.ijse.dao.DAOFactory;
 import lk.ijse.dao.custome.*;
 import lk.ijse.dao.impl.*;
 import lk.ijse.dto.*;
@@ -133,13 +135,13 @@ public class BatchFormController {
     private TableColumn<?, ?> colMatAction;
     @FXML
     private TableColumn<?, ?> colColor;
-    BatchBO batchBO = new BatchBOImpl();
-    BatchMachineBO batchMachineBO = new BatchMachineBOImpl();
-    BatchMaterialBO batchMaterialBO = new BatchMaterialBOImpl();
-    EmployeeDAO employeeDAO = new EmployeeDAOImpl();
-    MachineBO machineBO = new MachineBOImpl();
-    MaterialBO materialBO = new MaterialBOImpl();
-    OrderDAO orderDAO = new OrderDAOImpl();
+    BatchBO batchBO = (BatchBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.BATCH);
+    BatchMachineBO batchMachineBO = (BatchMachineBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.BATCHMACHINE);
+    BatchMaterialBO batchMaterialBO = (BatchMaterialBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.BATCHMATERIAL);
+    EmployeeDAO employeeDAO = (EmployeeDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.EMPLOYEE);
+    MachineBO machineBO = (MachineBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.MACHINE);
+    MaterialBO materialBO = (MaterialBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.MATERIAL);
+    OrderDAO orderDAO = (OrderDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.ORDER);
 
     @SneakyThrows
     public void initialize() {

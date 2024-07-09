@@ -12,10 +12,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custome.OrderBO;
 import lk.ijse.bo.custome.PaymentBO;
 import lk.ijse.bo.impl.OrderBOImpl;
 import lk.ijse.bo.impl.PaymentBOImpl;
+import lk.ijse.dao.DAOFactory;
 import lk.ijse.dao.custome.OrderDAO;
 import lk.ijse.dao.custome.PaymentDAO;
 import lk.ijse.dao.impl.OrderDAOImpl;
@@ -90,9 +92,8 @@ public class PaymentFormController {
 
     @FXML
     private JFXComboBox<String> comOrderId;
-    OrderDAO orderDAO = new OrderDAOImpl();
-   PaymentBO paymentBO = new PaymentBOImpl();
-
+    OrderDAO orderDAO = (OrderDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.ORDER);
+    PaymentBO paymentBO = (PaymentBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PAYMENT);
     @FXML
     void comOrderIdOnAction(ActionEvent event) {
         String oId = comOrderId.getValue();

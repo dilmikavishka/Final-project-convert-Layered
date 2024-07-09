@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custome.MachineBO;
 import lk.ijse.bo.impl.MachineBOImpl;
 import lk.ijse.dao.custome.MachineDAO;
@@ -63,8 +64,7 @@ public class MachineFormController {
 
     @FXML
     private TextField txtStatus;
-//    MachineDAO machineDAO = new MachineDAOImpl();
-    MachineBO  machineBO = new MachineBOImpl();
+    MachineBO  machineBO = (MachineBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.MACHINE);
 
     @SneakyThrows
     @FXML

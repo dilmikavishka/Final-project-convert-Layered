@@ -10,8 +10,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custome.MaterialDetailBO;
 import lk.ijse.bo.impl.MaterialDetailBOImpl;
+import lk.ijse.dao.DAOFactory;
 import lk.ijse.dao.custome.BatchDAO;
 import lk.ijse.dao.custome.MaterialDetailDAO;
 import lk.ijse.dao.impl.BatchDAOImpl;
@@ -59,8 +61,8 @@ public class MaterialDetailFormController {
 
     @FXML
     private TableView<MaterialDetailTm> tblMaterialsDetails;
-    BatchDAO batchDAO = new BatchDAOImpl();
-   MaterialDetailBO materialDetailBO = new MaterialDetailBOImpl();
+    BatchDAO batchDAO = (BatchDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.BATCH);
+   MaterialDetailBO materialDetailBO = (MaterialDetailBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.MATERIALDETAIL);
 
     public void initialize() {
         setCellValueFactory();

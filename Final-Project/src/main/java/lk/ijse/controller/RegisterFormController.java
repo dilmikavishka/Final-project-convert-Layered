@@ -75,10 +75,6 @@ public class RegisterFormController {
 
     private boolean saveUser(String userId, String name, String password) throws SQLException {
         String sql = "INSERT INTO user VALUES(?, ?, ?)";
-
-       /* DbConnection dbConnection = DbConnection.getInstance();
-        Connection connection = dbConnection.getConnection();*/
-
         Connection connection = DbConnection.getInstance().getConnection();
 
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -91,13 +87,10 @@ public class RegisterFormController {
     @FXML
     void linkLogOnAction(ActionEvent event) throws IOException {
         Parent rootNode = FXMLLoader.load(this.getClass().getResource("/view/LoginForm.fxml"));
-
         Scene scene = new Scene(rootNode);
         Stage stage = new Stage();
         stage.setScene(scene);
-
         stage.setTitle("Login Form");
-
         stage.show();
 
     }

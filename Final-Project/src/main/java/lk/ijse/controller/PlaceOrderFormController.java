@@ -15,8 +15,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custome.*;
 import lk.ijse.bo.impl.*;
+import lk.ijse.dao.DAOFactory;
 import lk.ijse.dao.custome.CustomerDAO;
 import lk.ijse.dao.impl.CustomerDAOImpl;
 import lk.ijse.db.DbConnection;
@@ -109,10 +111,10 @@ public class PlaceOrderFormController {
     @FXML
     private JFXComboBox<String> comCustomerTel;
     private ObservableList<PlaceOrderTm> obList = FXCollections.observableArrayList();
-    CustomerDAO customerDAO = new CustomerDAOImpl();
-    BatchBO batchBO = new BatchBOImpl();
-    OrderBO orderBO = new OrderBOImpl();
-    PlaceOrderBO placeOrderBO = new PlaceOrderBOImpl();
+    CustomerDAO customerDAO = (CustomerDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.CUSTOMER);
+    BatchBO batchBO = (BatchBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.BATCH);
+    OrderBO orderBO = (OrderBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.ORDER);
+    PlaceOrderBO placeOrderBO = (PlaceOrderBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PLACEORDER);
 
     @SneakyThrows
     public void initialize() {
@@ -196,11 +198,6 @@ public class PlaceOrderFormController {
         double unitPrice = Double.parseDouble(lblUnitPrice.getText());
         double total = qty * unitPrice;
 
-      /*  if (!isValied()) {
-            new Alert(Alert.AlertType.ERROR, "Please check all fields.").show();
-            return;
-        }*/
-
         JFXButton btnRemove = new JFXButton("remove");
         btnRemove.setCursor(Cursor.HAND);
 
@@ -271,10 +268,6 @@ public class PlaceOrderFormController {
         String cusId = lblCustomerId.getText();
         Date date = Date.valueOf(LocalDate.now());
 
-       /* if (!isValied()) {
-            new Alert(Alert.AlertType.ERROR, "Please check all fields.").show();
-            return;
-        }*/
         OrderDTO order = new OrderDTO(orderId,date,cusId);
 
         List<OredrDetailDTO> odList = new ArrayList<>();
@@ -296,10 +289,8 @@ public class PlaceOrderFormController {
 
         try {
             boolean isPlaced = placeOrderBO.placeOrder(order,odList);
-            System.out.println("pppp");
             if (isPlaced){
                 new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
-                System.out.println("dddddddddd");
                 obList.clear();
                 tblPlaceOrder.setItems(obList);
                 calculateNetTotal();

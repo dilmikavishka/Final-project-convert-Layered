@@ -35,13 +35,10 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
 
         try {
             boolean isOrderSaved = orderBO.saveOrder(order);
-            System.out.println("oooooooooo");
             if (isOrderSaved) {
                 boolean isQtyUpdated = batchDAO.qtyUpdate(odList);
-                System.out.println("bbbbbbbb");
                 if (isQtyUpdated){
                     boolean isOrderDetailSaved = orderDetailDAO.Save(odList);
-                    System.out.println("odddddddddd");
                     if (isOrderDetailSaved){
                         connection.commit();
                         return true;

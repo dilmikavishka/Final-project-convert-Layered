@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custome.CustomerBO;
 import lk.ijse.bo.impl.CustomerBOImpl;
 import lk.ijse.dao.custome.CustomerDAO;
@@ -81,7 +82,7 @@ public class CustomerFormController {
 
     @FXML
     private JFXButton btnCusList;
-    CustomerBO customerBO = new CustomerBOImpl();
+    CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
 
     @SneakyThrows
     public void initialize() {

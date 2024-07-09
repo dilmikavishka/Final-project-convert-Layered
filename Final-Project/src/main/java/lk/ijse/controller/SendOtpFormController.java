@@ -54,8 +54,4 @@ public class SendOtpFormController {
         timeline.play();
     }
 
-
-
-
-
 }

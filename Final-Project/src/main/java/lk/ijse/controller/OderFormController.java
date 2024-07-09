@@ -12,10 +12,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custome.CustomerBO;
 import lk.ijse.bo.custome.OrderBO;
 import lk.ijse.bo.impl.CustomerBOImpl;
 import lk.ijse.bo.impl.OrderBOImpl;
+import lk.ijse.dao.DAOFactory;
 import lk.ijse.dao.custome.CustomerDAO;
 import lk.ijse.dao.custome.OrderDAO;
 import lk.ijse.dao.impl.CustomerDAOImpl;
@@ -78,10 +80,9 @@ public class OderFormController {
 
     @FXML
     private TextField txtOrderId;
-    CustomerDAO customerDAO = new CustomerDAOImpl();
-
-    CustomerBO customerBO = new CustomerBOImpl();
-   OrderBO orderBO = new OrderBOImpl();
+    CustomerDAO customerDAO = (CustomerDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.CUSTOMER);
+    CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
+    OrderBO orderBO = (OrderBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.ORDER);
 
     @SneakyThrows
     public void initialize() {
@@ -100,7 +101,7 @@ public class OderFormController {
     private void getCustmoreIds() throws ClassNotFoundException {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> cusList = customerDAO.getCustomerIds();
+            List<String> cusList = customerBO.getCustomerIds();
             obList.addAll(cusList);
             comCustId.setItems(obList);
         } catch (SQLException e) {
@@ -219,7 +220,7 @@ public class OderFormController {
     void comCustIdOnAction(ActionEvent event) throws ClassNotFoundException {
         String id = comCustId.getValue();
         try {
-            CustomerDTO customer = customerBO.searchByIdCustomer(id);
+            Customer customer = customerDAO.searchById(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

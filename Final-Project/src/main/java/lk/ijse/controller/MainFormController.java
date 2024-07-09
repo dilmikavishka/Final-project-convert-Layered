@@ -100,8 +100,6 @@ public class MainFormController {
     @FXML
     void btnCostOnAction(ActionEvent event) throws IOException {
         AnchorPane batchPane = FXMLLoader.load(this.getClass().getResource("/view/BatchCostForm.fxml"));
-
-
         anpMain.getChildren().clear();
         anpMain.getChildren().add(batchPane);
     }
@@ -109,8 +107,6 @@ public class MainFormController {
     @FXML
     void btnBatchOnAction(ActionEvent event) throws IOException {
         AnchorPane batchPane = FXMLLoader.load(this.getClass().getResource("/view/BatchForm.fxml"));
-
-
         anpMain.getChildren().clear();
         anpMain.getChildren().add(batchPane);
 
@@ -119,8 +115,6 @@ public class MainFormController {
     @FXML
     void btnCustomerOnAction(ActionEvent event) throws IOException {
         AnchorPane customerPane = FXMLLoader.load(this.getClass().getResource("/view/CustomerForm.fxml"));
-
-
         anpMain.getChildren().clear();
         anpMain.getChildren().add(customerPane);
 
@@ -130,8 +124,6 @@ public class MainFormController {
     @FXML
     void btnEmployeeOnAction(ActionEvent event) throws IOException {
         AnchorPane employeePane = FXMLLoader.load(this.getClass().getResource("/view/EmployeeForm.fxml"));
-
-
         anpMain.getChildren().clear();
         anpMain.getChildren().add(employeePane);
     }
@@ -139,8 +131,6 @@ public class MainFormController {
     @FXML
     void btnMachineOnAction(ActionEvent event) throws IOException {
         AnchorPane machinePane = FXMLLoader.load(this.getClass().getResource("/view/MachineForm.fxml"));
-
-
         anpMain.getChildren().clear();
         anpMain.getChildren().add(machinePane);
     }
@@ -148,8 +138,6 @@ public class MainFormController {
     @FXML
     void btnMaterialsOnAction(ActionEvent event) throws IOException {
         AnchorPane materialsPane = FXMLLoader.load(this.getClass().getResource("/view/MaterialForm.fxml"));
-
-
         anpMain.getChildren().clear();
         anpMain.getChildren().add(materialsPane);
     }
@@ -157,8 +145,6 @@ public class MainFormController {
     @FXML
     void btnOrdersOnAction(ActionEvent event) throws IOException {
         AnchorPane orderPane = FXMLLoader.load(this.getClass().getResource("/view/OderForm.fxml"));
-
-
         anpMain.getChildren().clear();
         anpMain.getChildren().add(orderPane);
     }
@@ -166,8 +152,6 @@ public class MainFormController {
     @FXML
     void btnPaymentOnAction(ActionEvent event) throws IOException {
         AnchorPane paymentPane = FXMLLoader.load(this.getClass().getResource("/view/PaymentForm.fxml"));
-
-
         anpMain.getChildren().clear();
         anpMain.getChildren().add(paymentPane);
     }
@@ -175,8 +159,6 @@ public class MainFormController {
     @FXML
     void btnSupplierOnAction(ActionEvent event) throws IOException {
         AnchorPane supplierPane = FXMLLoader.load(this.getClass().getResource("/view/SupplierForm.fxml"));
-
-
         anpMain.getChildren().clear();
         anpMain.getChildren().add(supplierPane);
     }
@@ -185,8 +167,6 @@ public class MainFormController {
     @FXML
     void btnPlaceOrderOnAction(ActionEvent event) throws IOException {
         AnchorPane supplierPane = FXMLLoader.load(this.getClass().getResource("/view/PlaceOrderForm.fxml"));
-
-
         anpMain.getChildren().clear();
         anpMain.getChildren().add(supplierPane);
 

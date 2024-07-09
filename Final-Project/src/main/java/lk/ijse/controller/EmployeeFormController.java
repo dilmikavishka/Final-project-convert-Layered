@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custome.EmployeeBO;
 import lk.ijse.bo.impl.EmployeeBOImpl;
 import lk.ijse.dao.custome.EmployeeDAO;
@@ -85,8 +86,7 @@ public class EmployeeFormController {
 
     @FXML
     private JFXButton btnEmpList;
-   // EmployeeDAO employeeDAO = new EmployeeDAOImpl();
-    EmployeeBO employeeBO = new EmployeeBOImpl();
+    EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.EMPLOYEE);
 
 
     @SneakyThrows

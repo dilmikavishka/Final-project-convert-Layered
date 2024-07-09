@@ -16,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
 import lk.ijse.entity.Material;
 import lk.ijse.repository.MaterialRepo;
@@ -65,13 +66,8 @@ public class DashboardFormController implements Initializable {
     private BarChart<?, ?> barChart;
 
 
-    private int getActiveCustomerCount() throws SQLException {
-        String sql = "SELECT COUNT(*) AS active_customer_count FROM customer WHERE status = 'ACTIVE'";
-
-        Connection connection = DbConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
-
+    private int getActiveCustomerCount() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT COUNT(*) AS active_customer_count FROM customer WHERE status = 'ACTIVE'");
         if(resultSet.next()) {
             return resultSet.getInt("active_customer_count");
         }
@@ -82,13 +78,8 @@ public class DashboardFormController implements Initializable {
         lblOrderCount.setText(String.valueOf(orderCount));
     }
 
-    private int getOrderCount() throws SQLException {
-        String sql = "SELECT COUNT(*) AS active_order_count FROM Orders WHERE status = 'ACTIVE'";
-
-        Connection connection = DbConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
-
+    private int getOrderCount() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT COUNT(*) AS active_order_count FROM Orders WHERE status = 'ACTIVE'");
         if(resultSet.next()) {
             return resultSet.getInt("active_order_count");
         }
@@ -99,12 +90,8 @@ public class DashboardFormController implements Initializable {
         lblEmpCount.setText(String.valueOf(employeeCount));
     }
 
-    private int getEmployeeCount() throws SQLException {
-        String sql = "SELECT COUNT(*) AS active_employee_count FROM Employee WHERE status = 'ACTIVE'";
-
-        Connection connection = DbConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
+    private int getEmployeeCount() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet =SQLUtil.execute("SELECT COUNT(*) AS active_employee_count FROM Employee WHERE status = 'ACTIVE'");
 
         if(resultSet.next()) {
             return resultSet.getInt("active_employee_count");
@@ -136,7 +123,7 @@ public class DashboardFormController implements Initializable {
 
         try {
             customerCount = getActiveCustomerCount();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
         setCustomerCount(customerCount);
@@ -144,7 +131,7 @@ public class DashboardFormController implements Initializable {
 
         try {
             orderCount = getOrderCount();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
         setOrderCount(orderCount);
@@ -153,7 +140,7 @@ public class DashboardFormController implements Initializable {
 
         try {
             employeeCount = getEmployeeCount();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
         setEmployeeCount(employeeCount);
@@ -203,29 +190,3 @@ public class DashboardFormController implements Initializable {
         
     }
 }
-
-
-
-     /*try {
-            customerCount = getCustomerCount();
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        }
-        setCustomerCount(customerCount);
-
-
-        try {
-            orderCount = getOrderCount();
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        }
-        setOrderCount(orderCount);
-
-
-
-        try {
-            employeeCount = getEmployeeCount();
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        }
-        setEmployeeCount(employeeCount);*/

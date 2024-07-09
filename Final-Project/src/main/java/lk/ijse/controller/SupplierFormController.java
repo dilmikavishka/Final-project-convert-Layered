@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custome.PaymentBO;
 import lk.ijse.bo.custome.SupplierBO;
 import lk.ijse.bo.impl.PaymentBOImpl;
@@ -94,8 +95,8 @@ public class SupplierFormController {
 
     @FXML
     private JFXButton btnSupList;
-    PaymentBO paymentBO = new PaymentBOImpl();
-    SupplierBO supplierBO = new SupplierBOImpl();
+    PaymentBO paymentBO = (PaymentBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PAYMENT);
+    SupplierBO supplierBO = (SupplierBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.SUPPLIER);
 
 
     @SneakyThrows

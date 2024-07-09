@@ -12,7 +12,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custome.BatchBO;
+import lk.ijse.bo.custome.BatchCostBO;
 import lk.ijse.bo.custome.MaterialBO;
 import lk.ijse.bo.impl.BatchBOImpl;
 import lk.ijse.bo.impl.MaterialBOImpl;
@@ -106,8 +108,9 @@ public class BatchCostFormController {
     private TextField txtQty;
     private ObservableList<BatchCostTm> obList = FXCollections.observableArrayList();
 
-    MaterialBO materialBO = new MaterialBOImpl();
-    BatchBO batchBO = new BatchBOImpl();
+    MaterialBO materialBO = (MaterialBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.MATERIAL);
+    BatchBO batchBO = (BatchBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.BATCH);
+    BatchCostBO batchCostBO = (BatchCostBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.BATCHCOST);
 
     public void initialize() {
         setDate();
@@ -143,7 +146,7 @@ public class BatchCostFormController {
     private void getMaterialId() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> matIdList = materialBO.getMaterialIds();
+            List<String> matIdList = batchCostBO.getMaterialIds();
 
             for (String id : matIdList) {
                 obList.add(id);
@@ -158,7 +161,7 @@ public class BatchCostFormController {
     private void getBatchIds() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<String> batIdList = batchBO.getBatchIds();
+            List<String> batIdList = batchCostBO.getBatchIds();
 
             for (String id : batIdList) {
                 obList.add(id);
@@ -281,7 +284,6 @@ public class BatchCostFormController {
         double price = Double.parseDouble(lblPrice.getText());
         int qtyOnHand = Integer.parseInt(lblMatQtyOnHand.getText());
 
-       // MaterialDTO material = new MaterialDTO(materialId,matName,price,qtyOnHand);
         List<MaterialDetailDTO> bcList = new ArrayList<>();
 
         for (int i = 0; i < tblBatchCost.getItems().size(); i++) {
@@ -298,14 +300,8 @@ public class BatchCostFormController {
 
         BatchCostDTO bc = new BatchCostDTO(bcList);
 
-     /*   if (!isValied()) {
-            new Alert(Alert.AlertType.ERROR, "Please check all fields.").show();
-            return;
-        }*/
-
         try {
-            boolean isPlaced = BatchCostBOImpl.placeCost(bc);
-            System.out.println("pppp");
+            boolean isPlaced = batchCostBO.placeCost(bc);
             if (isPlaced){
                 new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
                 obList.clear();
@@ -324,8 +320,7 @@ public class BatchCostFormController {
     }
 
     private String calculateNetTotal(String batId) throws SQLException, ClassNotFoundException {
-        QueryDAO queryDAO = new QueryDAOImpl();
-        return queryDAO.calculateNetTotalBatch(batId);
+        return batchCostBO.calculateNetTotalBatch(batId);
 
     }
 

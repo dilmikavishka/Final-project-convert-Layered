@@ -13,8 +13,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.bo.BOFactory;
 import lk.ijse.bo.custome.MaterialBO;
 import lk.ijse.bo.impl.MaterialBOImpl;
+import lk.ijse.dao.DAOFactory;
 import lk.ijse.dao.custome.MaterialDAO;
 import lk.ijse.dao.custome.SupplierDAO;
 import lk.ijse.dao.impl.MaterialDAOImpl;
@@ -93,9 +95,8 @@ public class MaterialFormController {
     private TextField txtSupId;
     @FXML
     private JFXButton btnMaterialsDetail;
-   // MaterialDAO materialDAO = new MaterialDAOImpl();
-    MaterialBO materialBO = new MaterialBOImpl();
-    SupplierDAO supplierDAO = new SupplierDAOImpl();
+    MaterialBO materialBO = (MaterialBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.MATERIAL);
+    SupplierDAO supplierDAO = (SupplierDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.SUPPLIER);
 
     @SneakyThrows
     public void initialize() {
