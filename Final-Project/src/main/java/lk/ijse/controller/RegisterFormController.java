@@ -15,6 +15,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.Util.Regex;
 import lk.ijse.Util.TextFeild;
+import lk.ijse.dao.custome.RegisterDAO;
+import lk.ijse.dao.impl.RegisterDAOImpl;
 import lk.ijse.db.DbConnection;
 
 import java.io.IOException;
@@ -44,6 +46,7 @@ public class RegisterFormController {
 
     @FXML
     private Hyperlink linkLog;
+    RegisterDAO registerDAO = new RegisterDAOImpl();
 
     @FXML
     void btnRegisterOnAction(ActionEvent event) {
@@ -57,11 +60,11 @@ public class RegisterFormController {
         }
 
         try {
-            boolean isSaved = saveUser(userId, name, password);
+            boolean isSaved = registerDAO.saveUser(userId, name, password);
             if(isSaved) {
                 new Alert(Alert.AlertType.CONFIRMATION, "user saved!").show();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -73,17 +76,6 @@ public class RegisterFormController {
         return true;
     }
 
-    private boolean saveUser(String userId, String name, String password) throws SQLException {
-        String sql = "INSERT INTO user VALUES(?, ?, ?)";
-        Connection connection = DbConnection.getInstance().getConnection();
-
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setObject(1, userId);
-        pstm.setObject(2, name);
-        pstm.setObject(3, password);
-
-        return pstm.executeUpdate() > 0;
-    }
     @FXML
     void linkLogOnAction(ActionEvent event) throws IOException {
         Parent rootNode = FXMLLoader.load(this.getClass().getResource("/view/LoginForm.fxml"));

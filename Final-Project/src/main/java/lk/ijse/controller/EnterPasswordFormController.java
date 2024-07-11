@@ -42,7 +42,6 @@ public class EnterPasswordFormController {
         AnchorPane loginPane = FXMLLoader.load(this.getClass().getResource("/view/LoginForm.fxml"));
 
         Scene scene = new Scene(loginPane);
-
         Stage stage = (Stage) anpPasswor.getScene().getWindow();
         stage.setScene(scene);
         stage.centerOnScreen();
@@ -56,7 +55,6 @@ public class EnterPasswordFormController {
         if (newPassword.equalsIgnoreCase(conPassword)){
                 if (securityDAO.updatePassword(newPassword)){
                     new Alert(Alert.AlertType.CONFIRMATION, "Password Updated!!").show();
-
                 }
                 txtConformPassword.setStyle("-fx-border-color: green;");
                 txtNewPassword.setStyle("-fx-border-color: green;");

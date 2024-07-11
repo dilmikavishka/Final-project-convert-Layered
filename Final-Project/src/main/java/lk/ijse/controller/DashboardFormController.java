@@ -17,6 +17,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.dao.SQLUtil;
+import lk.ijse.dao.custome.DashboardDAO;
+import lk.ijse.dao.impl.DashboardDAOImpl;
 import lk.ijse.db.DbConnection;
 import lk.ijse.entity.Material;
 import lk.ijse.repository.MaterialRepo;
@@ -64,47 +66,7 @@ public class DashboardFormController implements Initializable {
 
     @FXML
     private BarChart<?, ?> barChart;
-
-
-    private int getActiveCustomerCount() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT COUNT(*) AS active_customer_count FROM customer WHERE status = 'ACTIVE'");
-        if(resultSet.next()) {
-            return resultSet.getInt("active_customer_count");
-        }
-        return 0;
-    }
-
-    private void setOrderCount(int orderCount) {
-        lblOrderCount.setText(String.valueOf(orderCount));
-    }
-
-    private int getOrderCount() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT COUNT(*) AS active_order_count FROM Orders WHERE status = 'ACTIVE'");
-        if(resultSet.next()) {
-            return resultSet.getInt("active_order_count");
-        }
-        return 0;
-    }
-
-    private void setEmployeeCount(int employeeCount) {
-        lblEmpCount.setText(String.valueOf(employeeCount));
-    }
-
-    private int getEmployeeCount() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet =SQLUtil.execute("SELECT COUNT(*) AS active_employee_count FROM Employee WHERE status = 'ACTIVE'");
-
-        if(resultSet.next()) {
-            return resultSet.getInt("active_employee_count");
-        }
-        return 0;
-
-    }
-
-    private void setCustomerCount(int customerCount) {
-        lblCusCount.setText(String.valueOf(customerCount));
-
-    }
-
+    DashboardDAO dashboardDAO = new DashboardDAOImpl();
     @FXML
     void btnLogoutOnAction(ActionEvent event) throws IOException {
         AnchorPane rootNote = FXMLLoader.load(this.getClass().getResource("/view/LoginForm.fxml"));
@@ -117,39 +79,38 @@ public class DashboardFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        iniPieChart();
-        iniLineChart();
-        iniBarChart();
+        int customerCount = 0;
+        int orderCount = 0;
+        int employeeCount = 0;
 
         try {
-            customerCount = getActiveCustomerCount();
+            iniPieChart();
+            iniLineChart();
+            iniBarChart();
+            customerCount = dashboardDAO.getActiveCustomerCount();
+            orderCount = dashboardDAO.getOrderCount();
+            employeeCount = dashboardDAO.getEmployeeCount();
         } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
         setCustomerCount(customerCount);
-
-
-        try {
-            orderCount = getOrderCount();
-        } catch (SQLException | ClassNotFoundException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        }
         setOrderCount(orderCount);
-
-
-
-        try {
-            employeeCount = getEmployeeCount();
-        } catch (SQLException | ClassNotFoundException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        }
         setEmployeeCount(employeeCount);
+
     }
+    private void setOrderCount(int orderCount) {
+        lblOrderCount.setText(String.valueOf(orderCount));
+    }
+
+    private void setEmployeeCount(int employeeCount) {
+        lblEmpCount.setText(String.valueOf(employeeCount));
+    }
+    private void setCustomerCount(int customerCount) {lblCusCount.setText(String.valueOf(customerCount));}
 
     private void iniBarChart() {
         XYChart.Series series = new XYChart.Series();
         try {
-            Map<String, Double> ordersByDay = OrderRepo.getOrdersByDay();
+            Map<String, Double> ordersByDay = dashboardDAO.getOrdersByDay();
 
             for (Map.Entry<String, Double> entry : ordersByDay.entrySet()) {
                 series.getData().add(new XYChart.Data(entry.getKey(), entry.getValue()));
@@ -161,9 +122,9 @@ public class DashboardFormController implements Initializable {
         }
     }
 
-    private void iniLineChart() {
+    private void iniLineChart() throws SQLException, ClassNotFoundException {
         XYChart.Series series = new XYChart.Series<>();
-        Map<String, Double> paymentsByDay = PaymentRepo.getPaymentsByDay();
+        Map<String, Double> paymentsByDay = dashboardDAO.getPaymentsByDay();
 
         for (Map.Entry<String, Double> entry : paymentsByDay.entrySet()) {
             series.getData().add(new XYChart.Data(entry.getKey(), entry.getValue()));
@@ -176,17 +137,14 @@ public class DashboardFormController implements Initializable {
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
         try {
-            List<Material> Material = MaterialRepo.getAll();
-
+            List<Material> Material = dashboardDAO.getAll();
             for (Material material : Material) {
                 pieChartData.add(new PieChart.Data(material.getName(), material.getPrice()));
             }
-
             pieChart.setData(pieChartData);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        
     }
 }

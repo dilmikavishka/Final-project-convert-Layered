@@ -188,8 +188,6 @@ public class PlaceOrderFormController {
     void btnAddToCartOnAction(ActionEvent event) {
         String batId = comCode.getValue();
         String description = lblDescription.getText();
-        //int qty = Integer.parseInt(txtQty.getText());
-
         int qty = 0;
         if (!txtQty.getText().isEmpty()) {
             qty = Integer.parseInt(txtQty.getText());

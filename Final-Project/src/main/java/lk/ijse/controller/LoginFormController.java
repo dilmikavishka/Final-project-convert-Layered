@@ -73,9 +73,7 @@ public class LoginFormController {
         Scene scene = new Scene(rootNode);
         Stage stage = new Stage();
         stage.setScene(scene);
-
         stage.setTitle("Registration Form");
-
         stage.show();
     }
 
