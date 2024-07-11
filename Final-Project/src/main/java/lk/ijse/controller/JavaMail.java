@@ -21,7 +21,6 @@ public class JavaMail {
 
             String myAccountEmail = "sehansassara2002@gmail.com";
             String password = "vqgc nsjj lpsb bhcn";
-            System.out.println("aaa");
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
@@ -31,15 +30,13 @@ public class JavaMail {
 
             });
 
-            System.out.println("bbb");
             Message message = prepareMessage(session, myAccountEmail, recipient, otp);
-            System.out.println("ccc");
             if (message != null) {
                 Transport.send(message);
             }
             System.out.println("Email Send successfully");
         } catch (MessagingException ex) {
-            ex.printStackTrace(); // or log the exception
+            ex.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error occurred while sending email: " + ex.getMessage()).show();
         }
     }
